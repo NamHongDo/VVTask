@@ -1,0 +1,42 @@
+﻿@model VTaskListViewModel
+
+    <h1>@Model.CurrentCategory</h1>
+    <table class="table">
+        @foreach (var vTask in Model.VTasks)
+        {
+        <tr>
+            <td>@vTask.Description</td>
+            <td>@vTask.Point</td>
+            <td>@vTask.Done</td>
+            <td>
+                <a class="btn btn-lg"
+                   asp-controller="VTask"
+                   asp-action="Details"
+                   asp-route-id="@vTask.Id">
+                    <i class="fa fa-question"></i>
+                </a>
+                <a class="btn btn-lg"
+                   asp-controller="VTask"
+                   asp-action="Edit"
+                   asp-route-id="@vTask.Id">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a class="btn btn-lg"
+                   asp-controller="VTask"
+                   asp-action= "Delete"
+                   asp-route-id="@vTask.Id">
+                    <i class="fas fa-trash"></i>
+                </a>
+                <a class="btn btn-lg"
+                   asp-controller="VTask"
+                   asp-action="ChangeStatus"
+                   asp-route-id="@vTask.Id">
+                    <i class="fas fa-check-square"></i>
+                </a>
+            </td>
+        </tr>
+        }
+    </table>
+
+<a asp-controller="VTask" asp-action="Create" class="btn btn-primary">Add New</a>
+

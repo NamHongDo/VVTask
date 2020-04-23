@@ -1,0 +1,12 @@
+﻿@model VTask
+
+<h1>Delete</h1>
+
+<div class="alert alert-danger">
+    Are you sure you want to delete @Model.Description?
+</div>
+
+<form method="post">
+    <button type ="submit" class="btn btn-danger"> Yes!</button>
+    <a asp-controller="VTask" asp-action="List">Cancel</a>
+</form>

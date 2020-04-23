@@ -1,0 +1,27 @@
+﻿@model VTask
+
+<h2> Editing VTask</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="@Model.Id" />
+    <div class="form-group">
+        <label asp-for="@Model.Description"></label>
+        <input asp-for="@Model.Description" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Point"></label>
+        <input asp-for="@Model.Point" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Done"></label>
+        <input type="checkbox" asp-for="@Model.Done" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.VType"></label>
+        <select
+            class="form-control" asp-for="@Model.VType"
+                                 asp-items="Html.GetEnumSelectList<VType>()">
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
