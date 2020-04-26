@@ -26,6 +26,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="VTask" asp-action="List">VTask</a>
                         </li>
+                        <partial name="_LoginPartial" />
                     </ul>
                 </div>
             </div>
@@ -37,6 +38,7 @@
         </main>
     </div>
 
+    @RenderSection("Scripts", required:false)
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - _3VReward - <a asp-area="" asp-page="/Privacy">Privacy</a>
