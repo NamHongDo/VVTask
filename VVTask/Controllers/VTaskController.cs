@@ -14,7 +14,6 @@ namespace VVTask.Controllers
     {
         private readonly IVTaskRepository _vTaskRepository;
         private readonly IHtmlHelper _htmlHelper;
-
         public VTask VTask { get; set; }
 
         public VTaskController( IVTaskRepository vTaskRepository,
