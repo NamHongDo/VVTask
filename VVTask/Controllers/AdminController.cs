@@ -152,5 +152,12 @@ namespace VVTask.Controllers
             }
             return RedirectToAction("EditRole", new { Id = roleId });
         }
+
+        [HttpGet]
+        public IActionResult ListUsers()
+        {
+            var users = _userManager.Users;
+            return View(users);
+        }
     }
 }
