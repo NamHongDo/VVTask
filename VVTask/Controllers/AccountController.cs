@@ -49,6 +49,7 @@ namespace VVTask.Controllers
             }
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
