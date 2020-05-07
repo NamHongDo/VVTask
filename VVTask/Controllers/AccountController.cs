@@ -56,5 +56,31 @@ namespace VVTask.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("index", "home");
         }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(
+                    model.Email, 
+                    model.Password, 
+                    model.RememberMe, 
+                    false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("index", "home");
+                }
+                ModelState.AddModelError(string.Empty,"Invalid Login Attempt");
+            }
+            return View(model);
+        }
+
     }
 }
