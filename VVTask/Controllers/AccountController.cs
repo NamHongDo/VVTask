@@ -39,6 +39,10 @@ namespace VVTask.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    if(_signInManager.IsSignedIn(User)&& User.IsInRole("admin"))
+                    {
+                        return RedirectToAction("ListUsers", "admin");
+                    }
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home");
                 }
