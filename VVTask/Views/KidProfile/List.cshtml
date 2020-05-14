@@ -1,0 +1,28 @@
+﻿@model KidProfileViewModel
+
+<h1>List of kids</h1>
+    @foreach (var kid in Model.Profiles)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">@kid.KidName</h3>
+                <h5>Id: @kid.KidId</h5>
+                <p class="card-text">Accumulated point: @kid.AccumultedPoint</p>
+                <a class="btn btn-primary"
+                   asp-controller="KidProfile"
+                   asp-action="Details"
+                   asp-route-id="@kid.KidId">Details</a>
+                <a class="btn btn-primary"
+                   asp-controller="KidProfile"
+                   asp-action="Edit"
+                   asp-route-id="@kid.KidId">Edit</a>
+                <a class="btn btn-primary"
+                   asp-controller="KidProfile"
+                   asp-action="Delete"
+                   asp-route-id="@kid.KidId">Delete</a>
+            </div>
+        </div>
+    }
+
+<a asp-controller="KidProfile" asp-action="Create" class="btn btn-primary">Add New</a>
+

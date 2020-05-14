@@ -18,7 +18,7 @@ namespace VVTask.Models
 
         public VTask Add(VTask newVTask)
         {
-            _appDbContext.Add(newVTask);
+            _appDbContext.VTasks.Add(newVTask);
             return newVTask;
         }
 
@@ -30,7 +30,7 @@ namespace VVTask.Models
         public VTask Delete(int id)
         {
             var vTask = _appDbContext.VTasks
-                        .Where(t => t.Id == id)
+                        .Where(t => t.VTaskId == id)
                         .FirstOrDefault();
             if(vTask != null)
             {
@@ -58,11 +58,12 @@ namespace VVTask.Models
 
         IEnumerable<VTask> IVTaskRepository.GetAll()
         {
-            return from v in _appDbContext.VTasks
-                   orderby v.Description
-                   select v;
+            
+            var result = from v in _appDbContext.VTasks.Include(v => v.KidProfile)
+                         orderby v.Description
+                         select v;
+            return result;
         }
-
 
     }
 }

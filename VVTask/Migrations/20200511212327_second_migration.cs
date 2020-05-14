@@ -2,20 +2,21 @@
 
 namespace VVTask.Migrations
 {
-    public partial class NotesAddedOnVTask : Migration
+    public partial class second_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Notes",
+            migrationBuilder.AddColumn<int>(
+                name: "KidId",
                 table: "VTasks",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Notes",
+                name: "KidId",
                 table: "VTasks");
         }
     }

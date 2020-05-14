@@ -6,8 +6,8 @@ using VVTask.Models;
 
 namespace VVTask.ViewModels
 {
-    public class VTaskListViewModel
+    public class KidProfileViewModel
     {
-        public IEnumerable<VTask> VTasks { get; set; }
+        public IEnumerable<KidProfile> Profiles { get; set; }
     }
 }

@@ -1,0 +1,14 @@
+﻿@model KidProfile
+
+<h2>Add a kid</h2>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="@Model.KidName"></label>
+        <input asp-for="@Model.KidName" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary"
+            asp-controller="KidProfile"
+            asp-action="Create">
+        Create
+    </button>
+</form>
