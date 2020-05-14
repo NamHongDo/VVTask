@@ -10,11 +10,20 @@ namespace VVTask.Models
 {
     public class AppDbContext:IdentityDbContext<IdentityUser>
     {
+        public DbSet<VTask> VTasks { get; set; }
+        public DbSet<KidProfile> Profiles { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
 
         }
-
-        public DbSet<VTask> VTasks { get; set; }
+/*
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<VTask>()
+                .HasOne(p => p.KidProfile)
+                .WithMany(b => b.VTasks);
+        }
+        */
     }
 }

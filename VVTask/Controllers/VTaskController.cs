@@ -13,24 +13,34 @@ namespace VVTask.Controllers
     public class VTaskController : Controller
     {
         private readonly IVTaskRepository _vTaskRepository;
-        private readonly IHtmlHelper _htmlHelper;
+        private readonly AppDbContext _appDbContext;
+
         public VTask VTask { get; set; }
 
         public VTaskController( IVTaskRepository vTaskRepository,
-                                IHtmlHelper htmlHelper)
+                                IHtmlHelper htmlHelper, 
+                                AppDbContext appDbContext)
         {
             _vTaskRepository = vTaskRepository;
-            this._htmlHelper = htmlHelper;
+            _appDbContext = appDbContext;
         }
         //Displaying a list of VTasks
-        public ViewResult List()
+        public ViewResult List(KidProfile newKidProfile)
         {
-            VTaskListViewModel vTasksListViewModel = new VTaskListViewModel
+            ViewBag.KidName = newKidProfile.KidName;
+            if (newKidProfile.VTasks!=null)
             {
-                VTasks = _vTaskRepository.GetAll(),
-                CurrentCategory = "VTask List"
-            };
-            return View(vTasksListViewModel);
+                VTaskListViewModel vTasksListViewModel = new VTaskListViewModel
+                {
+                    VTasks = _vTaskRepository.GetAll(),
+                };
+                return View(vTasksListViewModel);
+            }
+            else
+            {
+                return View();
+            }       
+            
         }
         //Displaying the detail of a single task
         public ActionResult Details(int id)
@@ -81,7 +91,7 @@ namespace VVTask.Controllers
             {
                 _vTaskRepository.Update(vTask);
                 _vTaskRepository.Commit();
-                return RedirectToAction("Details", new { id = vTask.Id });
+                return RedirectToAction("Details", new { id = vTask.VTaskId });
             }
             return View(vTask);
         }
@@ -101,7 +111,7 @@ namespace VVTask.Controllers
         {
             if (ModelState.IsValid)
             {
-                _vTaskRepository.Delete(vTask.Id);
+                _vTaskRepository.Delete(vTask.VTaskId);
                 _vTaskRepository.Commit();
                 return RedirectToAction("List");
             }

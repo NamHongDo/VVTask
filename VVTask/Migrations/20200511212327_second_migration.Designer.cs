@@ -10,8 +10,8 @@ using VVTask.Models;
 namespace VVTask.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200425185904_IdentityAdded")]
-    partial class IdentityAdded
+    [Migration("20200511212327_second_migration")]
+    partial class second_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -164,10 +164,12 @@ namespace VVTask.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -204,10 +206,12 @@ namespace VVTask.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -217,9 +221,27 @@ namespace VVTask.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("VVTask.Models.KidProfile", b =>
+                {
+                    b.Property<int>("KidId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccumultedPoint")
+                        .HasColumnType("int");
+
+                    b.Property<string>("KidName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("KidId");
+
+                    b.ToTable("Profiles");
+                });
+
             modelBuilder.Entity("VVTask.Models.VTask", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("VTaskId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -230,13 +252,21 @@ namespace VVTask.Migrations
                     b.Property<bool>("Done")
                         .HasColumnType("bit");
 
+                    b.Property<int>("KidId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("KidProfileKidId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Point")
                         .HasColumnType("int");
 
                     b.Property<int>("VType")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("VTaskId");
+
+                    b.HasIndex("KidProfileKidId");
 
                     b.ToTable("VTasks");
                 });
@@ -290,6 +320,13 @@ namespace VVTask.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("VVTask.Models.VTask", b =>
+                {
+                    b.HasOne("VVTask.Models.KidProfile", "KidProfile")
+                        .WithMany("VTasks")
+                        .HasForeignKey("KidProfileKidId");
                 });
 #pragma warning restore 612, 618
         }

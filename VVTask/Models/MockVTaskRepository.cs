@@ -11,9 +11,9 @@ namespace VVTask.Models
         public MockVTaskRepository() {
             AllVTasks= new List<VTask>
             {
-                new VTask { Id = 1, Description = "Brushing teeth at least 10 minutes", Point = 1, Done=false }, 
-                new VTask { Id = 2, Description = "Donate blood to a charity", Point = 15, Done=false }, 
-                new VTask { Id = 3, Description = "Sweep and mob the floor", Point = 3, Done=false }
+                new VTask { VTaskId = 1, Description = "Brushing teeth at least 10 minutes", Point = 1, Done=false }, 
+                new VTask { VTaskId = 2, Description = "Donate blood to a charity", Point = 15, Done=false }, 
+                new VTask { VTaskId = 3, Description = "Sweep and mob the floor", Point = 3, Done=false }
             };
         }
         public IEnumerable<VTask> GetAll()
@@ -28,18 +28,18 @@ namespace VVTask.Models
         public VTask Add(VTask newVTask)
         {
             AllVTasks.Add(newVTask);
-            newVTask.Id = AllVTasks.Max(t => t.Id) + 1;
+            newVTask.VTaskId = AllVTasks.Max(t => t.VTaskId) + 1;
             return newVTask;
         }
 
         public VTask GetTaskById(int VTaskId)
         {
-            return AllVTasks.FirstOrDefault(t => t.Id == VTaskId);
+            return AllVTasks.FirstOrDefault(t => t.VTaskId == VTaskId);
         }
 
         public VTask Update(VTask updatedVTask)
         {
-            var vTask = AllVTasks.FirstOrDefault(t => t.Id == updatedVTask.Id);
+            var vTask = AllVTasks.FirstOrDefault(t => t.VTaskId == updatedVTask.VTaskId);
             if(vTask != null)
             {
                 vTask.Description = updatedVTask.Description;
@@ -52,7 +52,7 @@ namespace VVTask.Models
 
         public VTask Delete(int id)
         {
-            var vTask = AllVTasks.FirstOrDefault(t => t.Id == id);
+            var vTask = AllVTasks.FirstOrDefault(t => t.VTaskId == id);
             if(vTask != null)
             {
                 AllVTasks.Remove(vTask);
@@ -63,7 +63,7 @@ namespace VVTask.Models
 
         public void UpdateStatus(VTask updatedVTask)
         {
-            var vTask = AllVTasks.FirstOrDefault(t => t.Id == updatedVTask.Id);
+            var vTask = AllVTasks.FirstOrDefault(t => t.VTaskId == updatedVTask.VTaskId);
             if (vTask != null)
             {
                 vTask.Description = updatedVTask.Description;

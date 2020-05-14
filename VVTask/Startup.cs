@@ -33,6 +33,7 @@ namespace VVTask
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
             services.AddScoped<IVTaskRepository, VTaskRepository>();
+            services.AddScoped<IKidRepository, KidRepository>();
             //services.AddSingleton<IVTaskRepository, MockVTaskRepository>();
             services.AddControllersWithViews();
             services.AddRazorPages();
