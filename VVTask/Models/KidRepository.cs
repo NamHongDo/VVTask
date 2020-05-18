@@ -47,7 +47,7 @@ namespace VVTask.Models
 
         public Kid GetProfileById(int KidId)
         {
-            return _appDbContext.Kids.Find(KidId);
+            return _appDbContext.Kids.Single(k => k.KidId == KidId);
         }
 
         public Kid Update(Kid updatedProfile)

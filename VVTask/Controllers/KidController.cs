@@ -11,11 +11,16 @@ namespace VVTask.Controllers
     public class KidController : Controller
     {
         private readonly IKidRepository _kidRepository;
+        private readonly IVTaskRepository _vTaskRepository;
         private readonly AppDbContext _appDbContext;
 
-        public KidController(IKidRepository kidRepository, AppDbContext appDbContext)
+        public KidController(
+            IKidRepository kidRepository,
+            IVTaskRepository vTaskRepository,
+            AppDbContext appDbContext)
         {
             _kidRepository = kidRepository;
+            _vTaskRepository = vTaskRepository;
             _appDbContext = appDbContext;
         }
         public ViewResult List()
@@ -25,6 +30,19 @@ namespace VVTask.Controllers
                 Profiles = _kidRepository.GetAll(),
             };
             return View(kidProfileViewModel);
+        }
+        //View task list of each kid profile
+        public ViewResult Details(int KidId)
+        {
+            var currentKid = _kidRepository.GetProfileById(KidId);
+            KidDetailsViewModel kidDetailsViewModel = new KidDetailsViewModel()
+            {
+                kid = currentKid,
+                currentKidVTasks = _vTaskRepository.GetAllByKidId(KidId)
+            };
+
+            return View(kidDetailsViewModel);
+            // return RedirectToAction("List","VTask", data);
         }
 
         [HttpGet]
@@ -45,16 +63,7 @@ namespace VVTask.Controllers
             }
             return View(profile);
         }
-        //View task list of each kid profile
-        public ActionResult Details(int KidId)
-        {
-            Kid data = new Kid()
-            {
-                KidId = KidId
-            };
-            return RedirectToAction("List","VTask", data);
-        }
-
+    
         [HttpGet]
         public ActionResult Edit(int id)
         {

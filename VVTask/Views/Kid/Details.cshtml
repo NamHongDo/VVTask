@@ -1,4 +1,51 @@
-﻿@model Kid
+﻿@model KidDetailsViewModel
 
-<h1>Details</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Name:</h1>
+        </div>
+        <div class="col-md-6">
+            <h1>@Model.kid.Name</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Total point:</h1>
+        </div>
+        <div class="col-md-6">
+            <h1>@Model.kid.TotalPoint</h1>
+        </div>
+    </div>
+</div>
+<a class="btn btn-primary"
+   asp-controller="Kid"
+   asp-action="Edit"
+   asp-route-id="@Model.kid.KidId">Edit</a>
+@if (@Model.currentKidVTasks.Count() != 0)
+{
+    <table class="table">
+        <tr>
+            <th>Description</th>
+            <th>Point</th>
+            <th>Done</th>
+            <th>Kid Id</th>
+        </tr>
+
+        @foreach (var vTask in Model.currentKidVTasks)
+        {
+            <partial name="_VTaskPartial" model="vTask" />
+        }
+    </table>
+}
+else
+{
+    <p>Please add Tasks to the list</p>
+    <h1>@Model.kid.KidId</h1>
+}
+<a asp-controller="VTask"
+   asp-action="Create"
+   asp-route-KidId="@Model.kid.KidId"
+   class="btn btn-primary">Add New</a>
+
 
