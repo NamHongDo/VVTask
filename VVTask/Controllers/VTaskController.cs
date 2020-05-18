@@ -15,12 +15,15 @@ namespace VVTask.Controllers
     {
         private readonly IVTaskRepository _vTaskRepository;
         private readonly AppDbContext _appDbContext;
+        private readonly IKidRepository _kidRepository;
 
         public VTask VTask { get; set; }
 
         public VTaskController( IVTaskRepository vTaskRepository,
+                                IKidRepository kidRepository,
                                 AppDbContext appDbContext)
         {
+            _kidRepository = kidRepository;
             _vTaskRepository = vTaskRepository;
             _appDbContext = appDbContext;
         }
@@ -168,11 +171,23 @@ namespace VVTask.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangeStatus(VTask vTask)
         {
+            Kid currentKid = _appDbContext.Kids.Single(k => k.KidId == vTask.KidId);
             if (ModelState.IsValid)
             {
-                _vTaskRepository.UpdateStatus(vTask);
+                vTask.Done = !vTask.Done;
+                _vTaskRepository.Update(vTask);
                 _vTaskRepository.Commit();
-                return RedirectToAction("List");
+                if(!vTask.Done)
+                {
+                    currentKid.TotalPoint -= vTask.Point;
+                } 
+                else
+                {
+                    currentKid.TotalPoint += vTask.Point;
+                } 
+                _kidRepository.Update(currentKid);
+                _kidRepository.Commit();
+                return RedirectToAction("List", "VTask", currentKid);
             }
             return View(vTask);
         }
