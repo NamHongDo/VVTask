@@ -10,7 +10,7 @@ using VVTask.Models;
 namespace VVTask.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200511212327_second_migration")]
+    [Migration("20200517214555_second_migration")]
     partial class second_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -221,22 +221,22 @@ namespace VVTask.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("VVTask.Models.KidProfile", b =>
+            modelBuilder.Entity("VVTask.Models.Kid", b =>
                 {
                     b.Property<int>("KidId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccumultedPoint")
-                        .HasColumnType("int");
-
-                    b.Property<string>("KidName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalPoint")
+                        .HasColumnType("int");
 
                     b.HasKey("KidId");
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Kids");
                 });
 
             modelBuilder.Entity("VVTask.Models.VTask", b =>
@@ -255,9 +255,6 @@ namespace VVTask.Migrations
                     b.Property<int>("KidId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("KidProfileKidId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Point")
                         .HasColumnType("int");
 
@@ -266,7 +263,7 @@ namespace VVTask.Migrations
 
                     b.HasKey("VTaskId");
 
-                    b.HasIndex("KidProfileKidId");
+                    b.HasIndex("KidId");
 
                     b.ToTable("VTasks");
                 });
@@ -324,9 +321,11 @@ namespace VVTask.Migrations
 
             modelBuilder.Entity("VVTask.Models.VTask", b =>
                 {
-                    b.HasOne("VVTask.Models.KidProfile", "KidProfile")
+                    b.HasOne("VVTask.Models.Kid", "Kid")
                         .WithMany("VTasks")
-                        .HasForeignKey("KidProfileKidId");
+                        .HasForeignKey("KidId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

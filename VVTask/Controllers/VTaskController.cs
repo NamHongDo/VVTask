@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using VVTask.Models;
 using VVTask.ViewModels;
 
+using Microsoft.EntityFrameworkCore;
 
 namespace VVTask.Controllers
 {
@@ -18,29 +19,51 @@ namespace VVTask.Controllers
         public VTask VTask { get; set; }
 
         public VTaskController( IVTaskRepository vTaskRepository,
-                                IHtmlHelper htmlHelper, 
                                 AppDbContext appDbContext)
         {
             _vTaskRepository = vTaskRepository;
             _appDbContext = appDbContext;
         }
-        //Displaying a list of VTasks
-        public ViewResult List(KidProfile newKidProfile)
+
+        public ViewResult TestList()
         {
-            ViewBag.KidName = newKidProfile.KidName;
-            if (newKidProfile.VTasks!=null)
+            /*
+            var VTasks = _appDbContext.VTasks.Include(v => v.Kid)
+                          .ToList();
+                          */
+            var VTasks = _appDbContext.VTasks
+                .Include(v => v.Kid)
+                .Where(v=> v.KidId == 2)
+            .ToList();
+            return View(VTasks);
+        }
+
+        //Displaying a list of VTasks
+        public ActionResult List(Kid newKidProfile)
+        {
+            ViewBag.Kid = newKidProfile;
+            var vTasks = _appDbContext.VTasks
+               .Include(v => v.Kid)
+               .Where(v => v.KidId == newKidProfile.KidId)
+            .ToList();
+            if (vTasks != null)
             {
                 VTaskListViewModel vTasksListViewModel = new VTaskListViewModel
                 {
-                    VTasks = _vTaskRepository.GetAll(),
+                    VTasks = vTasks,
+                    KidId = newKidProfile.KidId
                 };
                 return View(vTasksListViewModel);
             }
             else
             {
-                return View();
+                VTaskListViewModel vTasksListViewModel = new VTaskListViewModel
+                {
+                    VTasks = null,
+                    KidId = newKidProfile.KidId
+                };
+                return View(vTasksListViewModel);
             }       
-            
         }
         //Displaying the detail of a single task
         public ActionResult Details(int id)
@@ -53,23 +76,35 @@ namespace VVTask.Controllers
 
         //redirect to vtask creation page
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int KidId)
         {
-            return View();
+            VTask addVTaskViewModel = new VTask()
+            {
+                KidId = KidId
+            };
+            return View(addVTaskViewModel);
         }
 
         //submitting information to create a new vtask
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(VTask vTask)
+        public ActionResult Create(VTask addVTaskViewModel)
         {
+            Kid currentKid = _appDbContext.Kids.Single(k => k.KidId == addVTaskViewModel.KidId);
             if (ModelState.IsValid)
             {
-                _vTaskRepository.Add(vTask);
+                VTask newVTask = new VTask
+                {
+                    Description = addVTaskViewModel.Description,
+                    Point = addVTaskViewModel.Point,
+                    Kid = currentKid
+                };
+                _vTaskRepository.Add(newVTask);
+
                 _vTaskRepository.Commit();
-                return RedirectToAction("List");
+                return RedirectToAction("List","VTask", currentKid);
             }
-            return View(vTask);
+            return View(addVTaskViewModel);
         }
 
         //editing an existing vtask
@@ -105,18 +140,19 @@ namespace VVTask.Controllers
             return View(vTask);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(VTask vTask)
+        public ActionResult DeleteConfirmed(VTask vTask)
         {
+            Kid currentKid = _appDbContext.Kids.Single(k => k.KidId == vTask.KidId);
             if (ModelState.IsValid)
             {
                 _vTaskRepository.Delete(vTask.VTaskId);
                 _vTaskRepository.Commit();
-                return RedirectToAction("List");
+                return RedirectToAction("List","VTask", currentKid);
             }
 
-            return View(vTask);
+            return View();
         }
 
         [HttpGet]

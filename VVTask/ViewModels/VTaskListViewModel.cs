@@ -9,5 +9,6 @@ namespace VVTask.ViewModels
     public class VTaskListViewModel
     {
         public IEnumerable<VTask> VTasks { get; set; }
+        public int KidId { get; set; }
     }
 }

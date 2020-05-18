@@ -32,9 +32,9 @@ namespace VVTask.Models
             return newVTask;
         }
 
-        public VTask GetTaskById(int VTaskId)
+        public VTask GetTaskById(int Id)
         {
-            return AllVTasks.FirstOrDefault(t => t.VTaskId == VTaskId);
+            return AllVTasks.FirstOrDefault(t => t.VTaskId == Id);
         }
 
         public VTask Update(VTask updatedVTask)
@@ -71,6 +71,11 @@ namespace VVTask.Models
                 vTask.Done = !updatedVTask.Done;
                 vTask.VType = updatedVTask.VType;
             }
+        }
+
+        public IEnumerable<VTask> GetAllByKidId(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

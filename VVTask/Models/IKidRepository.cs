@@ -7,12 +7,11 @@ namespace VVTask.Models
 {
     public interface IKidRepository
     {
-        IEnumerable<KidProfile> GetAll();
-        KidProfile GetProfileById(int VTaskId);
-        KidProfile Add(KidProfile profile);
-        KidProfile Update(KidProfile updatedProfile);
-        KidProfile Delete(int id);
+        IEnumerable<Kid> GetAll();
+        Kid GetProfileById(int VTaskId);
+        Kid Add(Kid profile);
+        Kid Update(Kid updatedProfile);
+        Kid Delete(int id);
         int Commit();
-        void UpdateStatus(KidProfile vTask);
     }
 }

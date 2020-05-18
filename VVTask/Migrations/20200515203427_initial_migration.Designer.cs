@@ -10,8 +10,8 @@ using VVTask.Models;
 namespace VVTask.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200511153443_initialmigration")]
-    partial class initialmigration
+    [Migration("20200515203427_initial_migration")]
+    partial class initial_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,22 +221,22 @@ namespace VVTask.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("VVTask.Models.KidProfile", b =>
+            modelBuilder.Entity("VVTask.Models.Kid", b =>
                 {
                     b.Property<int>("KidId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccumultedPoint")
-                        .HasColumnType("int");
-
-                    b.Property<string>("KidName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalPoint")
+                        .HasColumnType("int");
 
                     b.HasKey("KidId");
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Kids");
                 });
 
             modelBuilder.Entity("VVTask.Models.VTask", b =>
@@ -252,7 +252,7 @@ namespace VVTask.Migrations
                     b.Property<bool>("Done")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("KidProfileKidId")
+                    b.Property<int?>("KidId")
                         .HasColumnType("int");
 
                     b.Property<int>("Point")
@@ -263,7 +263,7 @@ namespace VVTask.Migrations
 
                     b.HasKey("VTaskId");
 
-                    b.HasIndex("KidProfileKidId");
+                    b.HasIndex("KidId");
 
                     b.ToTable("VTasks");
                 });
@@ -321,9 +321,9 @@ namespace VVTask.Migrations
 
             modelBuilder.Entity("VVTask.Models.VTask", b =>
                 {
-                    b.HasOne("VVTask.Models.KidProfile", null)
+                    b.HasOne("VVTask.Models.Kid", "Kid")
                         .WithMany("VTasks")
-                        .HasForeignKey("KidProfileKidId");
+                        .HasForeignKey("KidId");
                 });
 #pragma warning restore 612, 618
         }

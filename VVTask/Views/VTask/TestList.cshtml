@@ -1,0 +1,54 @@
+﻿@model IEnumerable<VTask>
+@{
+    ViewData["Title"] = "TestList";
+}
+
+<h1>TestList</h1>
+
+<table>
+    <thead>
+    <th>
+        VTask Id
+    </th>
+    <th>
+        Description
+    </th>
+    <th>
+        Point
+    </th>
+    <th>
+        Done
+    </th>
+    <th>
+        Kid Name
+    </th>
+    <th>
+        Kid Id
+    </th>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.VTaskId
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    @item.Point
+                </td>
+                <td>
+                    @item.Done
+                </td>
+                <td>
+                    @item.Kid.Name
+                </td>
+                <td>
+                    @item.Kid.KidId
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

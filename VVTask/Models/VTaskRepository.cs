@@ -59,11 +59,17 @@ namespace VVTask.Models
         IEnumerable<VTask> IVTaskRepository.GetAll()
         {
             
-            var result = from v in _appDbContext.VTasks.Include(v => v.KidProfile)
+            var result = from v in _appDbContext.VTasks
                          orderby v.Description
                          select v;
             return result;
         }
+        IEnumerable<VTask> IVTaskRepository.GetAllByKidId(int KidId)
+        {
 
+            var result = _appDbContext.VTasks;
+                
+            return result;
+        }
     }
 }

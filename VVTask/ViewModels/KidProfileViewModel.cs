@@ -8,6 +8,6 @@ namespace VVTask.ViewModels
 {
     public class KidProfileViewModel
     {
-        public IEnumerable<KidProfile> Profiles { get; set; }
+        public IEnumerable<Kid> Profiles { get; set; }
     }
 }

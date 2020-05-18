@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VVTask.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class initial_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,17 +47,17 @@ namespace VVTask.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Profiles",
+                name: "Kids",
                 columns: table => new
                 {
                     KidId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    KidName = table.Column<string>(nullable: true),
-                    AccumultedPoint = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    TotalPoint = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Profiles", x => x.KidId);
+                    table.PrimaryKey("PK_Kids", x => x.KidId);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,15 +176,15 @@ namespace VVTask.Migrations
                     Point = table.Column<int>(nullable: false),
                     Done = table.Column<bool>(nullable: false),
                     VType = table.Column<int>(nullable: false),
-                    KidProfileKidId = table.Column<int>(nullable: true)
+                    KidId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VTasks", x => x.VTaskId);
                     table.ForeignKey(
-                        name: "FK_VTasks_Profiles_KidProfileKidId",
-                        column: x => x.KidProfileKidId,
-                        principalTable: "Profiles",
+                        name: "FK_VTasks_Kids_KidId",
+                        column: x => x.KidId,
+                        principalTable: "Kids",
                         principalColumn: "KidId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -229,9 +229,9 @@ namespace VVTask.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VTasks_KidProfileKidId",
+                name: "IX_VTasks_KidId",
                 table: "VTasks",
-                column: "KidProfileKidId");
+                column: "KidId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -261,7 +261,7 @@ namespace VVTask.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Profiles");
+                name: "Kids");
         }
     }
 }
