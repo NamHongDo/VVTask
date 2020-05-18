@@ -11,19 +11,17 @@ namespace VVTask.Models
     public class AppDbContext:IdentityDbContext<IdentityUser>
     {
         public DbSet<VTask> VTasks { get; set; }
-        public DbSet<KidProfile> Profiles { get; set; }
+        public DbSet<Kid> Kids { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
 
         }
-/*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<VTask>()
-                .HasOne(p => p.KidProfile)
-                .WithMany(b => b.VTasks);
+                .HasOne(k => k.Kid)
+                .WithMany(v => v.VTasks);
         }
-        */
     }
 }

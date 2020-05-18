@@ -15,7 +15,7 @@ namespace VVTask.Models
             _appDbContext = appDbContext;
         }
 
-        public KidProfile Add(KidProfile newProfile)
+        public Kid Add(Kid newProfile)
         {
             _appDbContext.Add(newProfile);
             return newProfile;
@@ -26,40 +26,36 @@ namespace VVTask.Models
             return _appDbContext.SaveChanges();
         }
 
-        public KidProfile Delete(int id)
+        public Kid Delete(int id)
         {
-            var profile = _appDbContext.Profiles
+            var profile = _appDbContext.Kids
                         .Where(p => p.KidId == id)
                         .FirstOrDefault();
             if (profile != null)
             {
-                _appDbContext.Profiles.Remove(profile);
+                _appDbContext.Kids.Remove(profile);
             }
             return profile;
         }
 
-        public IEnumerable<KidProfile> GetAll()
+        public IEnumerable<Kid> GetAll()
         {
-            return from p in _appDbContext.Profiles
-                   orderby p.KidName
-                   select p;
+            return from k in _appDbContext.Kids
+                   orderby k.Name
+                   select k;
         }
 
-        public KidProfile GetProfileById(int KidId)
+        public Kid GetProfileById(int KidId)
         {
-            return _appDbContext.Profiles.Find(KidId);
+            return _appDbContext.Kids.Find(KidId);
         }
 
-        public KidProfile Update(KidProfile updatedProfile)
+        public Kid Update(Kid updatedProfile)
         {
-            var entity = _appDbContext.Profiles.Attach(updatedProfile);
+            var entity = _appDbContext.Kids.Attach(updatedProfile);
             entity.State = EntityState.Modified;
             return updatedProfile;
         }
 
-        public void UpdateStatus(KidProfile vTask)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

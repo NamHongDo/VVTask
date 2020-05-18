@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace VVTask.Models
 {
-    public class KidProfile
+    public class Kid
     {
-        [Key]
         public int KidId { get; set; }
-        public string KidName { get; set; }
-        public int AccumultedPoint { get; set; } = 0;
-        public IList<VTask> VTasks { get; set; }
+        public string Name { get; set; }
+        public int TotalPoint { get; set; } = 0;
+        public List<VTask> VTasks { get; set; }
     }
 }

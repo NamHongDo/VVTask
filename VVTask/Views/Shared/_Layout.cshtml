@@ -27,6 +27,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="VTask" asp-action="List">VTask</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Kid" asp-action="List">Kid</a>
+                        </li>
                         @if (_signInManager.IsSignedIn(User) && User.IsInRole("admin"))
                         {
                             <li class="nav-item dropdown">

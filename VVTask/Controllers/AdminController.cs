@@ -63,7 +63,7 @@ namespace VVTask.Controllers
             var role = await _roleManager.FindByIdAsync(id);
             if(role==null)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
+                ViewBag.ErrorMessage = $"Role with KidId = {id} cannot be found";
                 return View("NotFound");
             }
             var model = new EditRoleViewModel
@@ -88,7 +88,7 @@ namespace VVTask.Controllers
             var role = await _roleManager.FindByIdAsync(roleId);
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
+                ViewBag.ErrorMessage = $"Role with KidId = {roleId} cannot be found";
                 return View("NotFound");
             }
 
@@ -166,7 +166,7 @@ namespace VVTask.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
+                ViewBag.ErrorMessage = $"User with KidId = {id} cannot be found";
                 return View("NotFound");
             }
 
@@ -188,7 +188,7 @@ namespace VVTask.Controllers
             var user = await _userManager.FindByIdAsync(model.Id);
             if (user == null)
             {
-                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
+                ViewBag.ErrorMessage = $"User with KidId = {model.Id} cannot be found";
                 return View("NotFound");
             }
             else

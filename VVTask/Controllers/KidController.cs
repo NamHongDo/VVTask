@@ -8,12 +8,12 @@ using VVTask.ViewModels;
 
 namespace VVTask.Controllers
 {
-    public class KidProfileController : Controller
+    public class KidController : Controller
     {
         private readonly IKidRepository _kidRepository;
         private readonly AppDbContext _appDbContext;
 
-        public KidProfileController(IKidRepository kidRepository, AppDbContext appDbContext)
+        public KidController(IKidRepository kidRepository, AppDbContext appDbContext)
         {
             _kidRepository = kidRepository;
             _appDbContext = appDbContext;
@@ -35,7 +35,7 @@ namespace VVTask.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(KidProfile profile)
+        public ActionResult Create(Kid profile)
         {
             if (ModelState.IsValid)
             {
@@ -45,11 +45,16 @@ namespace VVTask.Controllers
             }
             return View(profile);
         }
-        public ActionResult Details(int id)
+        //View task list of each kid profile
+        public ActionResult Details(int KidId)
         {
-            KidProfile newKidProfile = _appDbContext.Profiles.Single(c => c.KidId == id);
-            return RedirectToAction("List","VTask",newKidProfile);
+            Kid data = new Kid()
+            {
+                KidId = KidId
+            };
+            return RedirectToAction("List","VTask", data);
         }
+
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -62,7 +67,7 @@ namespace VVTask.Controllers
         // submitting new information for a existing vtask
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(KidProfile profile)
+        public ActionResult Edit(Kid profile)
         {
             if (ModelState.IsValid)
             {
@@ -83,11 +88,11 @@ namespace VVTask.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int kidID)
+        public ActionResult DeleteConfirmed(int KidId)
         {
             if (ModelState.IsValid)
             {
-                _kidRepository.Delete(kidID);
+                _kidRepository.Delete(KidId);
                 _kidRepository.Commit();
                 return RedirectToAction("List");
             }
