@@ -1,0 +1,34 @@
+﻿@model VTask
+
+        <tr>
+            <td>@Model.Description</td>
+            <td>@Model.Point</td>
+            <td>@Model.Done</td>
+            <td>@Model.KidId</td>
+            <td>
+                <a class="btn btn-lg"
+                   asp-controller="VTask"
+                   asp-action="Details"
+                   asp-route-id="@Model.VTaskId">
+                    <i class="fa fa-question"></i>
+                </a>
+                <a class="btn btn-lg"
+                   asp-controller="VTask"
+                   asp-action="Edit"
+                   asp-route-id="@Model.VTaskId">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a class="btn btn-lg"
+                   asp-controller="VTask"
+                   asp-action="Delete"
+                   asp-route-id="@Model.VTaskId">
+                    <i class="fas fa-trash"></i>
+                </a>
+                <a class="btn btn-lg"
+                   asp-controller="VTask"
+                   asp-action="ChangeStatus"
+                   asp-route-id="@Model.VTaskId">
+                    <i class="fas fa-check-square"></i>
+                </a>
+            </td>
+        </tr>

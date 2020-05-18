@@ -91,23 +91,23 @@ namespace VVTask.Controllers
         //submitting information to create a new vtask
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(VTask addVTaskViewModel)
+        public ActionResult Create(VTask vTask)
         {
-            Kid currentKid = _appDbContext.Kids.Single(k => k.KidId == addVTaskViewModel.KidId);
+            Kid currentKid = _appDbContext.Kids.Single(k => k.KidId == vTask.KidId);
             if (ModelState.IsValid)
             {
                 VTask newVTask = new VTask
                 {
-                    Description = addVTaskViewModel.Description,
-                    Point = addVTaskViewModel.Point,
+                    Description = vTask.Description,
+                    Point = vTask.Point,
                     Kid = currentKid
                 };
                 _vTaskRepository.Add(newVTask);
 
                 _vTaskRepository.Commit();
-                return RedirectToAction("List","VTask", currentKid);
+                return RedirectToAction("Details","Kid", new { vTask.KidId });
             }
-            return View(addVTaskViewModel);
+            return View(vTask);
         }
 
         //editing an existing vtask
@@ -129,7 +129,7 @@ namespace VVTask.Controllers
             {
                 _vTaskRepository.Update(vTask);
                 _vTaskRepository.Commit();
-                return RedirectToAction("Details", new { id = vTask.VTaskId });
+                return RedirectToAction("Details","Kid", new { vTask.KidId });
             }
             return View(vTask);
         }
@@ -152,7 +152,7 @@ namespace VVTask.Controllers
             {
                 _vTaskRepository.Delete(vTask.VTaskId);
                 _vTaskRepository.Commit();
-                return RedirectToAction("List","VTask", currentKid);
+                return RedirectToAction("Details", "Kid", new { vTask.KidId });
             }
 
             return View();
@@ -187,7 +187,7 @@ namespace VVTask.Controllers
                 } 
                 _kidRepository.Update(currentKid);
                 _kidRepository.Commit();
-                return RedirectToAction("List", "VTask", currentKid);
+                return RedirectToAction("Details", "Kid", new { vTask.KidId });
             }
             return View(vTask);
         }

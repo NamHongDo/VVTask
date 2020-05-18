@@ -13,6 +13,7 @@
 
         @foreach (var vTask in Model.VTasks)
         {
+            /*
             <tr>
                 <td>@vTask.Description</td>
                 <td>@vTask.Point</td>
@@ -45,6 +46,8 @@
                     </a>
                 </td>
             </tr>
+            */
+            <partial name="_VTaskPartial" model="vTask" />
         }
     </table>
 }
