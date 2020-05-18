@@ -51,11 +51,6 @@ namespace VVTask.Models
             return updatedVTask;
         }
 
-        public void UpdateStatus(VTask vTask)
-        {
-            throw new NotImplementedException();
-        }
-
         IEnumerable<VTask> IVTaskRepository.GetAll()
         {
             

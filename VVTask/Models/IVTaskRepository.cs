@@ -13,7 +13,6 @@ namespace VVTask.Models
         VTask Update(VTask updateVTask);
         VTask Delete(int id);
         int Commit();
-        void UpdateStatus(VTask vTask);
         IEnumerable<VTask> GetAllByKidId(int id);
     }
 }

@@ -3,22 +3,15 @@
 <h1>Delete</h1>
 
 <div class="alert alert-danger">
-    Are you sure you want to mark as complete the following task: @Model.Description?
+    Are you sure you want to change the status of the following task: @Model.Description?
 </div>
 
 <form method="post">
     <input type="hidden" asp-for="@Model.VTaskId" />
-    <div type="hidden" class="form-group">
-        <input type="hidden" asp-for="@Model.Description" class="form-control" />
-    </div>
-    <div class="form-group">
-        <input type="hidden" asp-for="@Model.Point" class="form-control" />
-    </div>
-    <div class="form-group">
-        <select type="hidden" class="form-control" asp-for="@Model.VType"
-                asp-items="Html.GetEnumSelectList<VType>()">
-        </select>
-    </div>
+    <input type="hidden" asp-for="@Model.Description" class="form-control" />
+     <input type="hidden" asp-for="@Model.Point" class="form-control" />
+    <input type="hidden" asp-for="@Model.Done" class="form-control" />
+    <input type="hidden" asp-for="@Model.KidId" class="form-control" />
     <button type="submit" class="btn btn-danger"> Yes!</button>
     <a asp-controller="VTask" asp-action="List">Cancel</a>
 </form>
