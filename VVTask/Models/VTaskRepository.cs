@@ -61,10 +61,10 @@ namespace VVTask.Models
         }
         IEnumerable<VTask> IVTaskRepository.GetAllByKidId(int KidId)
         {
-
-            var result = _appDbContext.VTasks;
-                
-            return result;
+            return _appDbContext.VTasks
+               .Include(v => v.Kid)
+               .Where(v => v.KidId == KidId)
+               .ToList();
         }
     }
 }

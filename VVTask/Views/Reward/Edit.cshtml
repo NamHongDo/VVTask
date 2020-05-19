@@ -1,0 +1,17 @@
+﻿@model Reward
+
+<h2> Editing Kid Profile</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="@Model.KidId" />
+    <input type="hidden" asp-for="@Model.RewardId" />
+    <div class="form-group">
+        <label asp-for="@Model.Description"></label>
+        <input asp-for="@Model.Description" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Point"></label>
+        <input asp-for="@Model.Point" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

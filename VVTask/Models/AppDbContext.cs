@@ -10,8 +10,9 @@ namespace VVTask.Models
 {
     public class AppDbContext:IdentityDbContext<IdentityUser>
     {
-        public DbSet<VTask> VTasks { get; set; }
         public DbSet<Kid> Kids { get; set; }
+        public DbSet<VTask> VTasks { get; set; }
+        public DbSet<Reward> Rewards { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
 
@@ -22,6 +23,9 @@ namespace VVTask.Models
             modelBuilder.Entity<VTask>()
                 .HasOne(k => k.Kid)
                 .WithMany(v => v.VTasks);
+            modelBuilder.Entity<Reward>()
+               .HasOne(k => k.Kid)
+               .WithMany(v => v.Rewards);
         }
     }
 }

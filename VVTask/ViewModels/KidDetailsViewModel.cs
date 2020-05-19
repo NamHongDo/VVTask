@@ -10,5 +10,6 @@ namespace VVTask.ViewModels
     {
         public Kid kid { get; set; }
         public IEnumerable<VTask> currentKidVTasks { get; set; }
+        public IEnumerable<Reward> currentKidRewards { get; set; }
     }
 }

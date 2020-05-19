@@ -14,41 +14,22 @@ namespace VVTask.Controllers
     public class VTaskController : Controller
     {
         private readonly IVTaskRepository _vTaskRepository;
-        private readonly AppDbContext _appDbContext;
         private readonly IKidRepository _kidRepository;
 
         public VTask VTask { get; set; }
 
         public VTaskController( IVTaskRepository vTaskRepository,
-                                IKidRepository kidRepository,
-                                AppDbContext appDbContext)
+                                IKidRepository kidRepository)
         {
             _kidRepository = kidRepository;
             _vTaskRepository = vTaskRepository;
-            _appDbContext = appDbContext;
-        }
-
-        public ViewResult TestList()
-        {
-            /*
-            var VTasks = _appDbContext.VTasks.Include(v => v.Kid)
-                          .ToList();
-                          */
-            var VTasks = _appDbContext.VTasks
-                .Include(v => v.Kid)
-                .Where(v=> v.KidId == 2)
-            .ToList();
-            return View(VTasks);
         }
 
         //Displaying a list of VTasks
         public ActionResult List(Kid newKidProfile)
         {
             ViewBag.Kid = newKidProfile;
-            var vTasks = _appDbContext.VTasks
-               .Include(v => v.Kid)
-               .Where(v => v.KidId == newKidProfile.KidId)
-            .ToList();
+            var vTasks = _vTaskRepository.GetAllByKidId(newKidProfile.KidId);
             if (vTasks != null)
             {
                 VTaskListViewModel vTasksListViewModel = new VTaskListViewModel
@@ -81,11 +62,11 @@ namespace VVTask.Controllers
         [HttpGet]
         public ActionResult Create(int KidId)
         {
-            VTask addVTaskViewModel = new VTask()
+            VTask vTask = new VTask()
             {
                 KidId = KidId
             };
-            return View(addVTaskViewModel);
+            return View(vTask);
         }
 
         //submitting information to create a new vtask
@@ -93,7 +74,7 @@ namespace VVTask.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VTask vTask)
         {
-            Kid currentKid = _appDbContext.Kids.Single(k => k.KidId == vTask.KidId);
+            Kid currentKid = _kidRepository.GetProfileById(vTask.KidId);
             if (ModelState.IsValid)
             {
                 VTask newVTask = new VTask
@@ -147,7 +128,6 @@ namespace VVTask.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(VTask vTask)
         {
-            Kid currentKid = _appDbContext.Kids.Single(k => k.KidId == vTask.KidId);
             if (ModelState.IsValid)
             {
                 _vTaskRepository.Delete(vTask.VTaskId);
@@ -171,7 +151,7 @@ namespace VVTask.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangeStatus(VTask vTask)
         {
-            Kid currentKid = _appDbContext.Kids.Single(k => k.KidId == vTask.KidId);
+            Kid currentKid = _kidRepository.GetProfileById(vTask.KidId);
             if (ModelState.IsValid)
             {
                 vTask.Done = !vTask.Done;
