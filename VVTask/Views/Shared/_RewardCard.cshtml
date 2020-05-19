@@ -1,0 +1,16 @@
+﻿@model Reward
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="thumbnail">
+        <img src="~/images/logo3.png" alt="" />
+    </div>
+    <div class="caption">
+        <h3 class="pull-right">@Model.Description</h3>
+        <h2 class="pull-right">Point cost: @Model.Point</h2>
+        <h3>
+            <a asp-controller="Reward" asp-action="Redeem" asp-route-id="@Model.RewardId" class="btn btn-primary">Redeem</a>
+            <a asp-controller="Reward" asp-action="Details" asp-route-id="@Model.RewardId" class="btn btn-primary">Details</a>
+            <a asp-controller="Reward" asp-action="Edit" asp-route-id="@Model.RewardId" class="btn btn-primary">Edit</a>
+            <a asp-controller="Reward" asp-action="Delete" asp-route-id="@Model.RewardId" class="btn btn-primary">Delete</a>
+        </h3>
+    </div>
+</div>

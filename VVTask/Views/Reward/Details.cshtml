@@ -1,0 +1,39 @@
+﻿@model Reward
+
+<h2>@Model.Description</h2>
+
+<div class="thumnbnail">
+    <div class="caption-full">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm col-md-6">
+                    <h4>Description: </h4>
+                </div>
+                <div class="col-sm col-md-6">
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm col-md-6">
+                    <h4>Point: </h4>
+                </div>
+                <div class="col-sm col-md-6">
+                    <p>@Model.Point</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm col-md-6">
+                    <h4>Done: </h4>
+                </div>
+                <div class="col-sm col-md-6">
+                    <p>@Model.Acquired</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-primary"
+   asp-action="Details"
+   asp-controller="Kid"
+   asp-route-KidId="@Model.KidId">Back to profile</a>

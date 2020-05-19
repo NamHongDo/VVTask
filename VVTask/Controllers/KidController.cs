@@ -12,15 +12,18 @@ namespace VVTask.Controllers
     {
         private readonly IKidRepository _kidRepository;
         private readonly IVTaskRepository _vTaskRepository;
+        private readonly IRewardRepository _rewardRepository;
         private readonly AppDbContext _appDbContext;
 
         public KidController(
             IKidRepository kidRepository,
             IVTaskRepository vTaskRepository,
+            IRewardRepository rewardRepository,
             AppDbContext appDbContext)
         {
             _kidRepository = kidRepository;
             _vTaskRepository = vTaskRepository;
+            _rewardRepository = rewardRepository;
             _appDbContext = appDbContext;
         }
         public ViewResult List()
@@ -38,7 +41,8 @@ namespace VVTask.Controllers
             KidDetailsViewModel kidDetailsViewModel = new KidDetailsViewModel()
             {
                 kid = currentKid,
-                currentKidVTasks = _vTaskRepository.GetAllByKidId(KidId)
+                currentKidVTasks = _vTaskRepository.GetAllByKidId(KidId),
+                currentKidRewards = _rewardRepository.GetAllByKidId(KidId)
             };
 
             return View(kidDetailsViewModel);

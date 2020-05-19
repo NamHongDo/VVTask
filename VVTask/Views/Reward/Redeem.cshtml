@@ -1,4 +1,4 @@
-﻿@model VTask
+﻿@model Reward
 
 <h1>Delete</h1>
 
@@ -7,10 +7,10 @@
 </div>
 
 <form method="post">
-    <input type="hidden" asp-for="@Model.VTaskId" />
+    <input type="hidden" asp-for="@Model.RewardId" />
     <input type="hidden" asp-for="@Model.Description" class="form-control" />
-     <input type="hidden" asp-for="@Model.Point" class="form-control" />
-    <input type="hidden" asp-for="@Model.Done" class="form-control" />
+    <input type="hidden" asp-for="@Model.Point" class="form-control" />
+    <input type="hidden" asp-for="@Model.Acquired" class="form-control" />
     <input type="hidden" asp-for="@Model.KidId" class="form-control" />
     <button type="submit" class="btn btn-danger"> Yes!</button>
     <a asp-controller="Kid" asp-action="Details" asp-route-KidId="@Model.KidId">Cancel</a>

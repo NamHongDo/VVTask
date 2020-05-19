@@ -22,6 +22,7 @@
    asp-controller="Kid"
    asp-action="Edit"
    asp-route-id="@Model.kid.KidId">Edit</a>
+<h1>Task List</h1>
 @if (@Model.currentKidVTasks.Count() != 0)
 {
     <table class="table">
@@ -41,11 +42,48 @@
 else
 {
     <p>Please add Tasks to the list</p>
-    <h1>@Model.kid.KidId</h1>
 }
 <a asp-controller="VTask"
    asp-action="Create"
    asp-route-KidId="@Model.kid.KidId"
    class="btn btn-primary">Add New</a>
 
+<h1>Available Rewards:</h1>
+@if (@Model.currentKidRewards.Count() != 0)
+{
+<div class="row">
+    @foreach (var reward in Model.currentKidRewards)
+    {
+        @if (reward.Acquired == false)
+        {
+            <partial name="_RewardCard" model="reward" />
+        }
+    }
+</div>
+}
+else
+{
+    <p>Please add Reward to the list</p>
+}
+<a asp-controller="Reward"
+   asp-action="Create"
+   asp-route-KidId="@Model.kid.KidId"
+   class="btn btn-primary">Add New</a>
 
+<h1>Redeemed Rewards:</h1>
+@if (@Model.currentKidRewards.Count() != 0)
+{
+<div class="row">
+    @foreach (var reward in Model.currentKidRewards)
+    {
+        @if (reward.Acquired == true)
+        {
+            <partial name="_RewardCard" model="reward" />
+        }
+    }
+</div>
+}
+else
+{
+    <p>Please add Reward to the list</p>
+}

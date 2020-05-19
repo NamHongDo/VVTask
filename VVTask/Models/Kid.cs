@@ -12,5 +12,6 @@ namespace VVTask.Models
         public string Name { get; set; }
         public int TotalPoint { get; set; } = 0;
         public List<VTask> VTasks { get; set; }
+        public List<Reward> Rewards { get; set; }
     }
 }
