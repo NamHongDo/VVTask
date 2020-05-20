@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using VVTask.Models;
 using VVTask.ViewModels;
-
-using Microsoft.EntityFrameworkCore;
 
 namespace VVTask.Controllers
 {
@@ -26,10 +20,10 @@ namespace VVTask.Controllers
         }
 
         //Displaying a list of VTasks
-        public ActionResult List(Kid newKidProfile)
+        public async Task<ActionResult> List(Kid newKidProfile)
         {
             ViewBag.Kid = newKidProfile;
-            var vTasks = _vTaskRepository.GetAllByKidId(newKidProfile.KidId);
+            var vTasks = await _vTaskRepository.GetAllByKidId(newKidProfile.KidId);
             if (vTasks != null)
             {
                 VTaskListViewModel vTasksListViewModel = new VTaskListViewModel
@@ -72,9 +66,9 @@ namespace VVTask.Controllers
         //submitting information to create a new vtask
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(VTask vTask)
+        public async Task<ActionResult> Create(VTask vTask)
         {
-            Kid currentKid = _kidRepository.GetProfileById(vTask.KidId);
+            Kid currentKid = await _kidRepository.GetProfileById(vTask.KidId);
             if (ModelState.IsValid)
             {
                 VTask newVTask = new VTask
@@ -85,7 +79,10 @@ namespace VVTask.Controllers
                 };
                 _vTaskRepository.Add(newVTask);
 
-                _vTaskRepository.Commit();
+                await _vTaskRepository.CommitAsync();
+
+                var toastobj = Helper.getToastObj("Task was successfully created!", "alert-success");
+                TempData.Put("toast", toastobj);
                 return RedirectToAction("Details","Kid", new { vTask.KidId });
             }
             return View(vTask);
@@ -104,12 +101,14 @@ namespace VVTask.Controllers
         // submitting new information for a existing vtask
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(VTask vTask)
+        public async Task<ActionResult> Edit(VTask vTask)
         {
             if (ModelState.IsValid)
             {
                 _vTaskRepository.Update(vTask);
-                _vTaskRepository.Commit();
+                await _vTaskRepository.CommitAsync();
+                var toastobj = Helper.getToastObj("Task was sucessfully updated!", "alert-success");
+                TempData.Put("toast", toastobj);
                 return RedirectToAction("Details","Kid", new { vTask.KidId });
             }
             return View(vTask);
@@ -126,12 +125,14 @@ namespace VVTask.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(VTask vTask)
+        public async Task<ActionResult> DeleteConfirmed(VTask vTask)
         {
             if (ModelState.IsValid)
             {
-                _vTaskRepository.Delete(vTask.VTaskId);
-                _vTaskRepository.Commit();
+                await _vTaskRepository.Delete(vTask.VTaskId);
+                await _vTaskRepository.CommitAsync();
+                var toastobj = Helper.getToastObj("Task was sucessfully Deleted!", "alert-success");
+                TempData.Put("toast", toastobj);
                 return RedirectToAction("Details", "Kid", new { vTask.KidId });
             }
 
@@ -149,15 +150,15 @@ namespace VVTask.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeStatus(VTask vTask)
+        public async Task<ActionResult> ChangeStatus(VTask vTask)
         {
-            Kid currentKid = _kidRepository.GetProfileById(vTask.KidId);
+            Kid currentKid = await _kidRepository.GetProfileById(vTask.KidId);
             if (ModelState.IsValid)
             {
                 vTask.Done = !vTask.Done;
                 _vTaskRepository.Update(vTask);
-                _vTaskRepository.Commit();
-                if(!vTask.Done)
+                await _vTaskRepository.CommitAsync();
+                if (!vTask.Done)
                 {
                     currentKid.TotalPoint -= vTask.Point;
                 } 
@@ -166,7 +167,9 @@ namespace VVTask.Controllers
                     currentKid.TotalPoint += vTask.Point;
                 } 
                 _kidRepository.Update(currentKid);
-                _kidRepository.Commit();
+                await _kidRepository.CommitAsync();
+                var toastobj = Helper.getToastObj("Task complete status updated!", "alert-success");
+                TempData.Put("toast", toastobj);
                 return RedirectToAction("Details", "Kid", new { vTask.KidId });
             }
             return View(vTask);

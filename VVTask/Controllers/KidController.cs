@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using VVTask.Models;
 using VVTask.ViewModels;
 
@@ -13,36 +14,41 @@ namespace VVTask.Controllers
         private readonly IKidRepository _kidRepository;
         private readonly IVTaskRepository _vTaskRepository;
         private readonly IRewardRepository _rewardRepository;
-        private readonly AppDbContext _appDbContext;
-
+        [BindProperty]
+        public Toaster _myToaster { get; set; }
         public KidController(
             IKidRepository kidRepository,
             IVTaskRepository vTaskRepository,
-            IRewardRepository rewardRepository,
-            AppDbContext appDbContext)
+            IRewardRepository rewardRepository)
         {
             _kidRepository = kidRepository;
             _vTaskRepository = vTaskRepository;
             _rewardRepository = rewardRepository;
-            _appDbContext = appDbContext;
+            _myToaster = new Toaster();
         }
-        public ViewResult List()
+        public async Task<ViewResult> List()
         {
+            CheckToast();
             KidProfileViewModel kidProfileViewModel = new KidProfileViewModel
             {
-                Profiles = _kidRepository.GetAll(),
+                Profiles = await _kidRepository.GetAll()
             };
             return View(kidProfileViewModel);
         }
+
         //View task list of each kid profile
-        public ViewResult Details(int KidId)
+        public async Task<ViewResult> Details(int KidId)
         {
-            var currentKid = _kidRepository.GetProfileById(KidId);
+            CheckToast();
+            var currentKid = await _kidRepository.GetProfileById(KidId);
+            var vTasks = await _vTaskRepository.GetAllByKidId(KidId);
+            var rewards = await _rewardRepository.GetAllByKidId(KidId);
             KidDetailsViewModel kidDetailsViewModel = new KidDetailsViewModel()
             {
                 kid = currentKid,
-                currentKidVTasks = _vTaskRepository.GetAllByKidId(KidId),
-                currentKidRewards = _rewardRepository.GetAllByKidId(KidId)
+                currentKidVTasks = vTasks,
+                currentKidRewards = rewards,
+                myToaster = _myToaster
             };
 
             return View(kidDetailsViewModel);
@@ -57,21 +63,23 @@ namespace VVTask.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Kid profile)
+        public async Task<ActionResult> Create(Kid profile)
         {
             if (ModelState.IsValid)
             {
                 _kidRepository.Add(profile);
-                _kidRepository.Commit();
+                await _kidRepository.CommitAsync();
+                var toastobj = Helper.getToastObj("Kid profile was created successfully", "alert-success");
+                TempData.Put("toast",toastobj);
                 return RedirectToAction("List");
             }
             return View(profile);
         }
     
         [HttpGet]
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var profile = _kidRepository.GetProfileById(id);
+            var profile = await _kidRepository.GetProfileById(id);
             if (profile == null)
                 return NotFound();
             return View(profile);
@@ -80,20 +88,22 @@ namespace VVTask.Controllers
         // submitting new information for a existing vtask
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Kid profile)
+        public async Task<ActionResult> Edit(Kid profile)
         {
             if (ModelState.IsValid)
             {
                 _kidRepository.Update(profile);
-                _kidRepository.Commit();
-                return RedirectToAction("List", new { id = profile.KidId });
+                await _kidRepository.CommitAsync();
+                var toastobj = Helper.getToastObj("Kid profile was edited successfully", "alert-success");
+                TempData.Put("toast", toastobj);
+                return RedirectToAction("Details", new { profile.KidId });
             }
             return View(profile);
         }
         [HttpGet]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var kidProfile = _kidRepository.GetProfileById(id);
+            var kidProfile = await _kidRepository.GetProfileById(id);
             if (kidProfile == null)
                 return NotFound();
             return View(kidProfile);
@@ -101,16 +111,29 @@ namespace VVTask.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int KidId)
+        public async Task<ActionResult> DeleteConfirmed(int KidId)
         {
             if (ModelState.IsValid)
             {
-                _kidRepository.Delete(KidId);
-                _kidRepository.Commit();
+                await _kidRepository.Delete(KidId);
+                await _kidRepository.CommitAsync();
+                var toastobj = Helper.getToastObj("Kid profile was Deleted successfully", "alert-success");
+                TempData.Put("toast", toastobj);
                 return RedirectToAction("List");
             }
-
             return View();
+        }
+        private void CheckToast()
+        {
+            var toastObj = TempData.Get<Toaster>("toast");
+            if (toastObj != null)
+            {
+                _myToaster = toastObj;
+            }
+            else
+            {
+                _myToaster = new Toaster() { };
+            }
         }
     }
 }

@@ -7,12 +7,12 @@ namespace VVTask.Models
 {
     public interface IVTaskRepository
     {
-        IEnumerable<VTask> GetAll();
+        Task<IEnumerable<VTask>> GetAll();
         VTask GetTaskById(int VTaskId);
         VTask Add(VTask vTask);
         VTask Update(VTask updateVTask);
-        VTask Delete(int id);
-        int Commit();
-        IEnumerable<VTask> GetAllByKidId(int id);
+        Task<VTask> Delete(int id);
+        Task CommitAsync();
+        Task<IEnumerable<VTask>> GetAllByKidId(int id);
     }
 }

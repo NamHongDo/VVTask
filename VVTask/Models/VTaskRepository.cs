@@ -22,16 +22,16 @@ namespace VVTask.Models
             return newVTask;
         }
 
-        public int Commit()
+        public async Task CommitAsync()
         {
-            return _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public VTask Delete(int id)
+        public async Task<VTask> Delete(int id)
         {
-            var vTask = _appDbContext.VTasks
+            var vTask = await _appDbContext.VTasks
                         .Where(t => t.VTaskId == id)
-                        .FirstOrDefault();
+                        .FirstOrDefaultAsync();
             if(vTask != null)
             {
                 _appDbContext.VTasks.Remove(vTask);
@@ -51,20 +51,16 @@ namespace VVTask.Models
             return updatedVTask;
         }
 
-        IEnumerable<VTask> IVTaskRepository.GetAll()
+        public async Task<IEnumerable<VTask>> GetAll()
         {
-            
-            var result = from v in _appDbContext.VTasks
-                         orderby v.Description
-                         select v;
-            return result;
+            return await _appDbContext.VTasks.ToListAsync();
         }
-        IEnumerable<VTask> IVTaskRepository.GetAllByKidId(int KidId)
+        public async Task<IEnumerable<VTask>> GetAllByKidId(int KidId)
         {
-            return _appDbContext.VTasks
-               .Include(v => v.Kid)
-               .Where(v => v.KidId == KidId)
-               .ToList();
+            return await _appDbContext.VTasks
+                           .Include(v => v.Kid)
+                           .Where(v => v.KidId == KidId)
+                           .ToListAsync();
         }
     }
 }

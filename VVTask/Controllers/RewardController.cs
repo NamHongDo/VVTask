@@ -43,9 +43,9 @@ namespace VVTask.Controllers
         //submitting information to create a new vtask
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Reward reward)
+        public async Task<ActionResult> Create(Reward reward)
         {
-            Kid currentKid = _kidRepository.GetProfileById(reward.KidId);
+            Kid currentKid = await _kidRepository.GetProfileById(reward.KidId);
             if (ModelState.IsValid)
             {
                 Reward newReward = new Reward
@@ -56,7 +56,9 @@ namespace VVTask.Controllers
                 };
                 _rewardRepository.Add(newReward);
 
-                _rewardRepository.Commit();
+                await _rewardRepository.CommitAsync();
+                var toastobj = Helper.getToastObj("Reward was added successfully", "alert-success");
+                TempData.Put("toast", toastobj);
                 return RedirectToAction("Details", "Kid", new { reward.KidId });
             }
             return View(reward);
@@ -75,12 +77,14 @@ namespace VVTask.Controllers
         // submitting new information for a existing vtask
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Reward reward)
+        public async Task<ActionResult> Edit(Reward reward)
         {
             if (ModelState.IsValid)
             {
                 _rewardRepository.Update(reward);
-                _rewardRepository.Commit();
+                await _rewardRepository.CommitAsync();
+                var toastobj = Helper.getToastObj("Reward was edited successfully", "alert-success");
+                TempData.Put("toast", toastobj);
                 return RedirectToAction("Details", "Kid", new { reward.KidId });
             }
             return View(reward);
@@ -97,12 +101,14 @@ namespace VVTask.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Reward reward)
+        public async Task<ActionResult> DeleteConfirmed(Reward reward)
         {
             if (ModelState.IsValid)
             {
-                _rewardRepository.Delete(reward.RewardId);
-                _rewardRepository.Commit();
+                await _rewardRepository.Delete(reward.RewardId);
+                await _rewardRepository.CommitAsync();
+                var toastobj = Helper.getToastObj("Reward was deleted successfully", "alert-danger");
+                TempData.Put("toast", toastobj);
                 return RedirectToAction("Details", "Kid", new { reward.KidId });
             }
             return View();
@@ -119,9 +125,9 @@ namespace VVTask.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Redeem(Reward reward)
+        public async Task<ActionResult> Redeem(Reward reward)
         {
-            Kid currentKid = _kidRepository.GetProfileById(reward.KidId);
+            Kid currentKid = await _kidRepository.GetProfileById(reward.KidId);
             if (ModelState.IsValid)
             {
                 reward.Acquired = !reward.Acquired;
@@ -130,10 +136,11 @@ namespace VVTask.Controllers
                     if (currentKid.TotalPoint < reward.Point)
                     {
                         reward.Acquired = !reward.Acquired;
+                        TempData.Put("toast",new Toaster{ Message ="Kid does not have enough point", CssClass="alert-danger"});
                         return RedirectToAction("Details", "Kid", new { reward.KidId });
                     }
                     else
-                    {
+                    { 
                         currentKid.TotalPoint -= reward.Point;
                     }
                 }
@@ -141,10 +148,12 @@ namespace VVTask.Controllers
                 {
                     currentKid.TotalPoint += reward.Point;
                 }
+                var toastobj = Helper.getToastObj("Reward was redeemed successfully", "alert-danger");
+                TempData.Put("toast", toastobj);
                 _rewardRepository.Update(reward);
-                _rewardRepository.Commit();
+                await _rewardRepository.CommitAsync();
                 _kidRepository.Update(currentKid);
-                _kidRepository.Commit();
+                await _kidRepository.CommitAsync();
                 return RedirectToAction("Details", "Kid", new { reward.KidId });
             }
             return View(reward);

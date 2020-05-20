@@ -1,5 +1,14 @@
 ﻿@model KidDetailsViewModel
 
+@if ((Model.myToaster.Message != "") && (Model.myToaster != null))
+{
+    <div class="toast mt-3" id="mytoastr">
+        <div class="toast-body @Model.myToaster.CssClass">
+            @Model.myToaster.Message
+        </div>
+    </div>
+}
+
 <div class="container">
     <div class="row">
         <div class="col-md-6">
@@ -22,7 +31,9 @@
    asp-controller="Kid"
    asp-action="Edit"
    asp-route-id="@Model.kid.KidId">Edit</a>
+
 <h1>Task List</h1>
+
 @if (@Model.currentKidVTasks.Count() != 0)
 {
     <table class="table">
@@ -51,15 +62,15 @@ else
 <h1>Available Rewards:</h1>
 @if (@Model.currentKidRewards.Count() != 0)
 {
-<div class="row">
-    @foreach (var reward in Model.currentKidRewards)
-    {
-        @if (reward.Acquired == false)
+    <div class="row">
+        @foreach (var reward in Model.currentKidRewards)
         {
-            <partial name="_RewardCard" model="reward" />
+            @if (reward.Acquired == false)
+            {
+                <partial name="_RewardCard" model="reward" />
+            }
         }
-    }
-</div>
+    </div>
 }
 else
 {
@@ -73,15 +84,15 @@ else
 <h1>Redeemed Rewards:</h1>
 @if (@Model.currentKidRewards.Count() != 0)
 {
-<div class="row">
-    @foreach (var reward in Model.currentKidRewards)
-    {
-        @if (reward.Acquired == true)
+    <div class="row">
+        @foreach (var reward in Model.currentKidRewards)
         {
-            <partial name="_RewardCard" model="reward" />
+            @if (reward.Acquired == true)
+            {
+                <partial name="_RewardCard" model="reward" />
+            }
         }
-    }
-</div>
+    </div>
 }
 else
 {

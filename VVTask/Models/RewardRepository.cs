@@ -20,16 +20,16 @@ namespace VVTask.Models
             return newReward;
         }
 
-        public int Commit()
+        public async Task CommitAsync()
         {
-            return _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public Reward Delete(int id)
+        public async Task<Reward> Delete(int id)
         {
-            var reward = _appDbContext.Rewards
+            var reward = await _appDbContext.Rewards
                         .Where(t => t.RewardId == id)
-                        .FirstOrDefault();
+                        .FirstOrDefaultAsync();
             if (reward != null)
             {
                 _appDbContext.Rewards.Remove(reward);
@@ -37,25 +37,22 @@ namespace VVTask.Models
             return reward;
         }
 
-        public IEnumerable<Reward> GetAll()
+        public async Task<IEnumerable<Reward>> GetAll()
         {
-            var result = from r in _appDbContext.Rewards
-                         orderby r.Description
-                         select r;
-            return result;
+            return await _appDbContext.Rewards.ToListAsync();
         }
 
-        public IEnumerable<Reward> GetAllByKidId(int kidId)
+        public async Task<IEnumerable<Reward>> GetAllByKidId(int kidId)
         {
-            return _appDbContext.Rewards
+            return await _appDbContext.Rewards
                .Include(v => v.Kid)
                .Where(v => v.KidId == kidId)
-               .ToList();
+               .ToListAsync();
         }
 
-        public Reward GetRewardById(int rewardId)
+        public async Task<Reward> GetRewardById(int rewardId)
         {
-            return _appDbContext.Rewards.Find(rewardId);
+            return await _appDbContext.Rewards.FindAsync(rewardId);
         }
 
         public Reward Update(Reward updateReward)
