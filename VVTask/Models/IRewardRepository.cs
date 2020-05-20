@@ -8,12 +8,12 @@ namespace VVTask.Models
 {
     public interface IRewardRepository
     {
-        IEnumerable<Reward> GetAll();
-        Reward GetRewardById(int rewardId);
+        Task<IEnumerable<Reward>> GetAll();
+        Task<Reward> GetRewardById(int rewardId);
         Reward Add(Reward reward);
         Reward Update(Reward reward);
-        Reward Delete(int id);
-        int Commit();
-        IEnumerable<Reward> GetAllByKidId(int id);
+        Task<Reward> Delete(int id);
+        Task CommitAsync();
+        Task<IEnumerable<Reward>> GetAllByKidId(int id);
     }
 }

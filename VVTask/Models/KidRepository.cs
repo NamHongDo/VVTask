@@ -21,16 +21,16 @@ namespace VVTask.Models
             return newProfile;
         }
 
-        public int Commit()
+        public async Task CommitAsync()
         {
-            return _appDbContext.SaveChanges();
+           await _appDbContext.SaveChangesAsync();
         }
 
-        public Kid Delete(int id)
+        public async Task<Kid> Delete(int id)
         {
-            var profile = _appDbContext.Kids
+            var profile = await _appDbContext.Kids
                         .Where(p => p.KidId == id)
-                        .FirstOrDefault();
+                        .FirstOrDefaultAsync();
             if (profile != null)
             {
                 _appDbContext.Kids.Remove(profile);
@@ -38,16 +38,14 @@ namespace VVTask.Models
             return profile;
         }
 
-        public IEnumerable<Kid> GetAll()
+        public async Task<IEnumerable<Kid>> GetAll()
         {
-            return from k in _appDbContext.Kids
-                   orderby k.Name
-                   select k;
+             return await _appDbContext.Kids.ToListAsync(); 
         }
 
-        public Kid GetProfileById(int KidId)
+        public async Task<Kid> GetProfileById(int KidId)
         {
-            return _appDbContext.Kids.Single(k => k.KidId == KidId);
+            return await(_appDbContext.Kids.FirstOrDefaultAsync(k => k.KidId == KidId));
         }
 
         public Kid Update(Kid updatedProfile)
