@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VVTask.Models;
+using VVTask.Others;
 
 namespace VVTask.ViewModels
 {
@@ -14,5 +15,6 @@ namespace VVTask.ViewModels
         public IEnumerable<Reward> currentKidRewards { get; set; }
         [BindProperty]
         public Toaster myToaster { get; set; }
+        public PaginatedList<VTask> paginatedList { get; set; }
     }
 }
