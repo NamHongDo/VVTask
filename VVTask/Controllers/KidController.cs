@@ -37,12 +37,31 @@ namespace VVTask.Controllers
         }
 
         //View task list of each kid profile
-        public async Task<ViewResult> Details(int KidId)
+        public async Task<ViewResult> Details(int KidId, string sortOrder)
         {
             CheckToast();
+
             var currentKid = await _kidRepository.GetProfileById(KidId);
             var vTasks = await _vTaskRepository.GetAllByKidId(KidId);
             var rewards = await _rewardRepository.GetAllByKidId(KidId);
+
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["PointSortParm"] = sortOrder == "Point" ? "point_desc" : "Point";
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    vTasks = vTasks.OrderByDescending(v => v.Description);
+                    break;
+                case "Point":
+                    vTasks = vTasks.OrderBy(v => v.Point);
+                    break;
+                case "point_desc":
+                    vTasks = vTasks.OrderByDescending(v => v.Point);
+                    break;
+                default:
+                    vTasks = vTasks.OrderBy(v => v.Description);
+                    break;
+            }
             KidDetailsViewModel kidDetailsViewModel = new KidDetailsViewModel()
             {
                 kid = currentKid,

@@ -24,6 +24,7 @@ namespace VVTask.Controllers
         {
             ViewBag.Kid = newKidProfile;
             var vTasks = await _vTaskRepository.GetAllByKidId(newKidProfile.KidId);
+
             if (vTasks != null)
             {
                 VTaskListViewModel vTasksListViewModel = new VTaskListViewModel

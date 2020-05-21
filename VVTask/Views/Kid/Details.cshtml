@@ -38,8 +38,14 @@
 {
     <table class="table">
         <tr>
-            <th>Description</th>
-            <th>Point</th>
+            <th>
+                <a asp-action="Details" 
+                   asp-route-KidId="@Model.kid.KidId"
+                   asp-route-sortOrder="@ViewData["NameSortParm"]">Description</a>
+            </th>
+            <th><a asp-action="Details"
+               asp-route-KidId="@Model.kid.KidId"
+               asp-route-sortOrder="@ViewData["PointSortParm"]">Description</a></th>
             <th>Done</th>
             <th>Kid Id</th>
         </tr>
