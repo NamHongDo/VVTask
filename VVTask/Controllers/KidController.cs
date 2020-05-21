@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using VVTask.Models;
+using VVTask.Others;
 using VVTask.ViewModels;
 
 namespace VVTask.Controllers
@@ -14,17 +16,20 @@ namespace VVTask.Controllers
         private readonly IKidRepository _kidRepository;
         private readonly IVTaskRepository _vTaskRepository;
         private readonly IRewardRepository _rewardRepository;
+        private readonly AppDbContext _appDbContext;
+
         [BindProperty]
-        public Toaster _myToaster { get; set; }
+        public Toaster MyToaster { get; set; }
         public KidController(
             IKidRepository kidRepository,
             IVTaskRepository vTaskRepository,
-            IRewardRepository rewardRepository)
+            IRewardRepository rewardRepository,
+            AppDbContext appDbContext)
         {
             _kidRepository = kidRepository;
             _vTaskRepository = vTaskRepository;
             _rewardRepository = rewardRepository;
-            _myToaster = new Toaster();
+            _appDbContext = appDbContext;
         }
         public async Task<ViewResult> List()
         {
@@ -37,16 +42,36 @@ namespace VVTask.Controllers
         }
 
         //View task list of each kid profile
-        public async Task<ViewResult> Details(int KidId, string sortOrder)
+        public async Task<ViewResult> Details(
+            int KidId, 
+            string sortOrder,
+            string currentFilter,
+            string searchString,
+            int? pageNumber)
         {
             CheckToast();
-
             var currentKid = await _kidRepository.GetProfileById(KidId);
-            var vTasks = await _vTaskRepository.GetAllByKidId(KidId);
             var rewards = await _rewardRepository.GetAllByKidId(KidId);
-
+            int pageSize = 5;
+           
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["PointSortParm"] = sortOrder == "Point" ? "point_desc" : "Point";
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+            var vTasks = from v in _appDbContext.VTasks.Where(v => v.KidId == KidId)
+                         select v;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                vTasks = vTasks.Where(v => v.Description.Contains(searchString));
+            }
             switch (sortOrder)
             {
                 case "name_desc":
@@ -62,16 +87,16 @@ namespace VVTask.Controllers
                     vTasks = vTasks.OrderBy(v => v.Description);
                     break;
             }
+            var paginatedList = await PaginatedList<VTask>.CreateAsync(vTasks.AsNoTracking(), pageNumber ?? 1, pageSize);
             KidDetailsViewModel kidDetailsViewModel = new KidDetailsViewModel()
             {
                 kid = currentKid,
                 currentKidVTasks = vTasks,
                 currentKidRewards = rewards,
-                myToaster = _myToaster
+                myToaster = MyToaster,
+                paginatedList = paginatedList
             };
-
             return View(kidDetailsViewModel);
-            // return RedirectToAction("List","VTask", data);
         }
 
         [HttpGet]
@@ -147,11 +172,11 @@ namespace VVTask.Controllers
             var toastObj = TempData.Get<Toaster>("toast");
             if (toastObj != null)
             {
-                _myToaster = toastObj;
+                MyToaster = toastObj;
             }
             else
             {
-                _myToaster = new Toaster() { };
+                MyToaster = new Toaster() { };
             }
         }
     }

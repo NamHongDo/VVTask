@@ -1,5 +1,6 @@
 ﻿@model KidDetailsViewModel
 
+
 @if ((Model.myToaster.Message != "") && (Model.myToaster != null))
 {
     <div class="toast mt-3" id="mytoastr">
@@ -36,25 +37,61 @@
 
 @if (@Model.currentKidVTasks.Count() != 0)
 {
+    <form asp-action="Details" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Description:
+                <input type="hidden" name="KidId" asp-for="@Model.kid.KidId" />
+                <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="Details"
+                   asp-route-KidId="@Model.kid.KidId">Back to Full List</a>
+            </p>
+        </div>
+    </form>
     <table class="table">
         <tr>
             <th>
-                <a asp-action="Details" 
+                <a asp-action="Details"
                    asp-route-KidId="@Model.kid.KidId"
-                   asp-route-sortOrder="@ViewData["NameSortParm"]">Description</a>
+                   asp-route-sortOrder="@ViewData["NameSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Description</a>
             </th>
-            <th><a asp-action="Details"
-               asp-route-KidId="@Model.kid.KidId"
-               asp-route-sortOrder="@ViewData["PointSortParm"]">Description</a></th>
+            <th>
+                <a asp-action="Details"
+                   asp-route-KidId="@Model.kid.KidId"
+                   asp-route-sortOrder="@ViewData["PointSortParm"]"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Point</a>
+            </th>
             <th>Done</th>
             <th>Kid Id</th>
         </tr>
 
-        @foreach (var vTask in Model.currentKidVTasks)
+        @foreach (var vTask in Model.paginatedList)
         {
             <partial name="_VTaskPartial" model="vTask" />
         }
     </table>
+
+    var prevDisabled = !Model.paginatedList.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.paginatedList.HasNextPage ? "disabled" : "";
+
+    <a asp-action="Details"
+       asp-route-KidId="@Model.kid.KidId"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.paginatedList.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Details"
+       asp-route-KidId="@Model.kid.KidId"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.paginatedList.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
 }
 else
 {
