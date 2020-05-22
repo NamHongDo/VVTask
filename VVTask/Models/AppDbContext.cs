@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VVTask.Models
 {
-    public class AppDbContext:IdentityDbContext<IdentityUser>
+    public class AppDbContext:IdentityDbContext<ApplicationUser>
     {
         public DbSet<Kid> Kids { get; set; }
         public DbSet<VTask> VTasks { get; set; }
@@ -20,6 +20,10 @@ namespace VVTask.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Kid>()
+                .HasOne(a => a.ApplicationUser)
+                .WithMany(k => k.Kids)
+                .HasForeignKey(a => a.ApplicationUserId);
             modelBuilder.Entity<VTask>()
                 .HasOne(k => k.Kid)
                 .WithMany(v => v.VTasks);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using VVTask.Models;
 using VVTask.ViewModels;
 
 namespace VVTask.Controllers
@@ -13,11 +14,11 @@ namespace VVTask.Controllers
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public AdminController (
             RoleManager<IdentityRole> roleManager,
-            UserManager<IdentityUser> userMananger)
+            UserManager<ApplicationUser> userMananger)
         {
            _roleManager = roleManager;
             _userManager = userMananger;

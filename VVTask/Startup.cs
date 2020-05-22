@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,18 +28,24 @@ namespace VVTask
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContextPool<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services
-                .AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
+                .AddIdentity<ApplicationUser, IdentityRole>(
+                
+                )
                 .AddEntityFrameworkStores<AppDbContext>();
+
             services.AddScoped<IVTaskRepository, VTaskRepository>();
             services.AddScoped<IRewardRepository, RewardRepository>();
             services.AddScoped<IKidRepository, KidRepository>();
-            //services.AddSingleton<IVTaskRepository, MockVTaskRepository>();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            }).AddXmlSerializerFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +67,7 @@ namespace VVTask
 
             app.UseRouting();
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -67,7 +76,6 @@ namespace VVTask
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}"
                     );
-                endpoints.MapRazorPages();
             });
         }
     }
