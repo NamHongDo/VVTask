@@ -13,5 +13,8 @@ namespace VVTask.Models
         public int TotalPoint { get; set; } = 0;
         public List<VTask> VTasks { get; set; }
         public List<Reward> Rewards { get; set; }
+
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

@@ -9,5 +9,6 @@ namespace VVTask.ViewModels
     public class KidProfileViewModel
     {
         public IEnumerable<Kid> Profiles { get; set; }
+        public string userName { get; set; }
     }
 }

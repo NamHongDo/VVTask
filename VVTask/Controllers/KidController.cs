@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -11,12 +14,15 @@ using VVTask.ViewModels;
 
 namespace VVTask.Controllers
 {
+    [Authorize]
     public class KidController : Controller
     {
         private readonly IKidRepository _kidRepository;
         private readonly IVTaskRepository _vTaskRepository;
         private readonly IRewardRepository _rewardRepository;
         private readonly AppDbContext _appDbContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<ApplicationUser> _userMananger;
 
         [BindProperty]
         public Toaster MyToaster { get; set; }
@@ -24,19 +30,31 @@ namespace VVTask.Controllers
             IKidRepository kidRepository,
             IVTaskRepository vTaskRepository,
             IRewardRepository rewardRepository,
-            AppDbContext appDbContext)
+            AppDbContext appDbContext,
+            IHttpContextAccessor httpContextAccessor,
+            UserManager<ApplicationUser> userMananger)
         {
             _kidRepository = kidRepository;
             _vTaskRepository = vTaskRepository;
             _rewardRepository = rewardRepository;
             _appDbContext = appDbContext;
+            _httpContextAccessor = httpContextAccessor;
+            _userMananger = userMananger;
         }
-        public async Task<ViewResult> List()
+
+        public async Task<ViewResult> List( )
         {
             CheckToast();
+            /*need better query*/
+            var username = _httpContextAccessor.HttpContext?.User.Identity.Name;
+            var currentUserProfile = _userMananger.Users.FirstOrDefault(u=>u.UserName==username);
+            var list = await _appDbContext.Kids
+                .Where(k=> k.ApplicationUserId == currentUserProfile.Id)
+                .ToListAsync();
             KidProfileViewModel kidProfileViewModel = new KidProfileViewModel
             {
-                Profiles = await _kidRepository.GetAll()
+                Profiles = list,
+                userName = username
             };
             return View(kidProfileViewModel);
         }
@@ -109,8 +127,11 @@ namespace VVTask.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Kid profile)
         {
+            var username = _httpContextAccessor.HttpContext?.User.Identity.Name;
+            var currentUserProfile = _userMananger.Users.FirstOrDefault(u => u.UserName == username);
             if (ModelState.IsValid)
             {
+                profile.ApplicationUserId = currentUserProfile.Id;
                 _kidRepository.Add(profile);
                 await _kidRepository.CommitAsync();
                 var toastobj = Helper.getToastObj("Kid profile was created successfully", "alert-success");
