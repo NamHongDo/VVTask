@@ -54,6 +54,7 @@ namespace VVTask.Controllers
             KidProfileViewModel kidProfileViewModel = new KidProfileViewModel
             {
                 Profiles = list,
+                KidCount = list.Count(),
                 userName = username
             };
             return View(kidProfileViewModel);
