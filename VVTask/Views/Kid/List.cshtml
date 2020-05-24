@@ -1,12 +1,12 @@
 ﻿@model KidProfileViewModel
 <h1>Welcome @Model.userName!</h1>
-<div class="jumbotron jumbotron-fluid bg-dark text-light p-5 rounded">
+<div class="jumbotron jumbotron-fluid bg-dark border-light text-light p-5 rounded">
     <h1 class="display-4 mt-0"><strong>OverView</strong></h1>
     <p>Kid profiles: @Model.KidCount </p>
     <hr class="my-4 bg-light" />
-    <a asp-controller="Kid" asp-action="Create" class="btn btn-outline-light">Add new Kid</a>
+    <a asp-controller="Kid" asp-action="Create" class="btn btn-outline-primary">Add new Kid</a>
 </div>
-<div class="border bg-dark text-light border-dark p-5 rounded">
+<div class="border bg-dark text-light border-light p-5 rounded">
     <h1>List of kids</h1>
     <hr class="my-4 bg-light" />
     <div class="container">

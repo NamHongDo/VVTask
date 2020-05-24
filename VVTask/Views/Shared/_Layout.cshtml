@@ -10,11 +10,10 @@
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <link href="~/css/styles.css" rel="stylesheet" />
 </head>
-<body>
+<body class="bg-dark text-light">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-dark bg-dark text-light navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">VTask</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,10 +21,10 @@
                 <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link " asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Kid" asp-action="List">Kid</a>
+                            <a class="nav-link " asp-controller="Kid" asp-action="List">Kid</a>
                         </li>
                         @if (_signInManager.IsSignedIn(User) && User.IsInRole("admin"))
                         {
@@ -35,8 +34,8 @@
                                     Manage
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="nav-link text-dark" asp-controller="Admin" asp-action="ListUsers">Users</a>
-                                    <a class="nav-link text-dark" asp-controller="Admin" asp-action="ListRoles">Roles</a>
+                                    <a class="nav-link " asp-controller="Admin" asp-action="ListUsers">Users</a>
+                                    <a class="nav-link " asp-controller="Admin" asp-action="ListRoles">Roles</a>
                                 </div>
                             </li>
                         }
@@ -55,10 +54,10 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+                                <a class="nav-link " asp-controller="Account" asp-action="Register">Register</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                                <a class="nav-link " asp-controller="Account" asp-action="Login">Login</a>
                             </li>
                         }
                     </ul>
@@ -66,7 +65,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container bg-dark">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

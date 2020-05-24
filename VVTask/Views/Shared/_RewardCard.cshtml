@@ -1,16 +1,16 @@
 ﻿@model Reward
-<div class="col-sm-4 col-lg-4 col-md-4">
+<div class="col-lg-4 col-md-3 border border-light rounded mb-4 p-4 mr-4">
     <div class="thumbnail">
-        <img src="~/images/logo3.png" alt="" />
+        <img class="card-img" src="~/images/elf-hunter.jpg" alt="" />
     </div>
     <div class="caption">
-        <h3 class="pull-right">@Model.Description</h3>
-        <h2 class="pull-right">Point cost: @Model.Point</h2>
-        <h3>
-            <a asp-controller="Reward" asp-action="Redeem" asp-route-id="@Model.RewardId" class="btn btn-primary">Redeem</a>
-            <a asp-controller="Reward" asp-action="Details" asp-route-id="@Model.RewardId" class="btn btn-primary">Details</a>
-            <a asp-controller="Reward" asp-action="Edit" asp-route-id="@Model.RewardId" class="btn btn-primary">Edit</a>
-            <a asp-controller="Reward" asp-action="Delete" asp-route-id="@Model.RewardId" class="btn btn-primary">Delete</a>
-        </h3>
+        <h2 class="pull-right">@Model.RewardName</h2>
+        <h3 class="pull-right">Point cost: @Model.Point</h3>
+        <div class="btn-group mt-4 mb-4">
+            <a asp-controller="Reward" asp-action="Redeem" asp-route-id="@Model.RewardId" class="btn btn-outline-primary">Redeem</a>
+            <a asp-controller="Reward" asp-action="Details" asp-route-id="@Model.RewardId" class="btn btn-outline-info">Details</a>
+            <a asp-controller="Reward" asp-action="Edit" asp-route-id="@Model.RewardId" class="btn btn-outline-warning">Edit</a>
+            <a asp-controller="Reward" asp-action="Delete" asp-route-id="@Model.RewardId" class="btn btn-outline-danger">Delete</a>
+        </div>
     </div>
 </div>
