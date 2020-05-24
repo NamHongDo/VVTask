@@ -54,6 +54,7 @@ namespace VVTask.Controllers
             KidProfileViewModel kidProfileViewModel = new KidProfileViewModel
             {
                 Profiles = list,
+                KidCount = list.Count(),
                 userName = username
             };
             return View(kidProfileViewModel);
@@ -158,7 +159,8 @@ namespace VVTask.Controllers
             if (ModelState.IsValid)
             {
                 _kidRepository.Update(profile);
-                await _kidRepository.CommitAsync();
+                await _appDbContext.SaveChangesAsync();
+                //await _kidRepository.CommitAsync();
                 var toastobj = Helper.getToastObj("Kid profile was edited successfully", "alert-success");
                 TempData.Put("toast", toastobj);
                 return RedirectToAction("Details", new { profile.KidId });

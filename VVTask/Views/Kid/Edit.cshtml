@@ -3,6 +3,7 @@
 <h2> Editing Kid Profile</h2>
 
 <form method="post">
+    <input type="hidden" asp-for="@Model.ApplicationUserId" />
     <input type="hidden" asp-for="@Model.KidId" />
     <div class="form-group">
         <label asp-for="@Model.Name"></label>

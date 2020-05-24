@@ -9,6 +9,7 @@
 <form asp-action="Delete" asp-route-KidId="@Model.KidId" method="post">
     <input type="hidden" asp-for="@Model.Name" />
     <input type="hidden" asp-for="@Model.KidId" />
+    <input type="hidden" asp-for="@Model.ApplicationUserId" />
     <button type="submit" class="btn btn-danger" asp-route-KidId="@Model.KidId"> Yes!</button>
     <a asp-controller="KidProfile" asp-action="List">Cancel</a>
 </form>

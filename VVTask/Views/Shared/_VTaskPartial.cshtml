@@ -1,5 +1,5 @@
 ﻿@model VTask
-
+    <tbody>
         <tr>
             <td>@Model.Description</td>
             <td>@Model.Point</td>
@@ -10,7 +10,7 @@
                    asp-controller="VTask"
                    asp-action="Details"
                    asp-route-id="@Model.VTaskId">
-                    <i class="fa fa-question"></i>
+                    <i class="fas fa-question"></i>
                 </a>
                 <a class="btn btn-lg"
                    asp-controller="VTask"
@@ -32,3 +32,4 @@
                 </a>
             </td>
         </tr>
+    </tbody>

@@ -21,9 +21,9 @@ namespace VVTask.Controllers
         }
 
         //Displaying the detail of a single task
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            var reward = _rewardRepository.GetRewardById(id);
+            var reward = await _rewardRepository.GetRewardById(id);
             if (reward == null)
                 return NotFound();
             return View(reward);
@@ -50,6 +50,7 @@ namespace VVTask.Controllers
             {
                 Reward newReward = new Reward
                 {
+                    RewardName = reward.RewardName,
                     Description = reward.Description,
                     Point = reward.Point,
                     Kid = currentKid
@@ -66,9 +67,9 @@ namespace VVTask.Controllers
 
         //editing an existing vtask
         [HttpGet]
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var vTask = _rewardRepository.GetRewardById(id);
+            var vTask = await _rewardRepository.GetRewardById(id);
             if (vTask == null)
                 return NotFound();
             return View(vTask);
@@ -91,9 +92,9 @@ namespace VVTask.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var reward = _rewardRepository.GetRewardById(id);
+            var reward = await _rewardRepository.GetRewardById(id);
             if (reward == null)
                 return NotFound();
             return View(reward);
@@ -115,12 +116,12 @@ namespace VVTask.Controllers
         }
 
         [HttpGet]
-        public ActionResult Redeem(int id)
+        public async Task<ActionResult> Redeem(int id)
         {
-            var vTask = _rewardRepository.GetRewardById(id);
-            if (vTask == null)
+            var reward = await _rewardRepository.GetRewardById(id);
+            if (reward == null)
                 return NotFound();
-            return View(vTask);
+            return View(reward);
         }
 
         [HttpPost]
