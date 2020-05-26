@@ -10,9 +10,9 @@
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <link href="~/css/styles.css" rel="stylesheet" />
 </head>
-<body class="bg-dark text-light">
+<body>
     <header>
-        <nav class="navbar navbar-dark bg-dark text-light navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
+        <nav class="vNav navbar navbar-dark navbar-expand-sm navbar-toggleable-sm mb-3">
             <div class="container">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -65,15 +65,23 @@
             </div>
         </nav>
     </header>
-    <div class="container bg-dark">
-        <main role="main" class="pb-3">
+    <div>
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
     @RenderSection("Scripts", required: false)
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-light text-center">
+        <div id="footer-buffer"></div>
+        <div class="container">
+            <div class="btn-group btn-group-lg my-3" role="group" aria-label="footer" id="social-btn-container">
+                <a class="btn" href="https://www.linkedin.com/in/namdo-csat/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a class="btn" href="https://github.com/namhongdo" target="_blank"><i class="fab fa-github-alt"></i> </a>
+                <a class="btn" href="https://www.youtube.com/channel/UCWYADF5Rye2azNX8lnb7kQA" target="_blank"><i class="fab fa-youtube"></i> </a>
+            </div>
+        </div>
         <div class="container">
             &copy; 2020 - _3VReward - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
