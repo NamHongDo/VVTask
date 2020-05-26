@@ -1,194 +1,199 @@
 ﻿@model KidDetailsViewModel
 
-
-@if ((Model.myToaster.Message != "") && (Model.myToaster != null))
-{
-    <div class="toast mt-3" id="mytoastr">
-        <div class="toast-body @Model.myToaster.CssClass">
-            @Model.myToaster.Message
-        </div>
-    </div>
-}
-<div class="jumbotron jumbotron-fluid bg-dark text-light p-5 rounded">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <img class="img-fluid rounded-circle" src="~/images/elf-warrior.jpg" />
+    <div class="p-sm-2 p-lg-5">
+        @if ((Model.myToaster.Message != "") && (Model.myToaster != null))
+        {
+            <div class="toast mt-3" id="mytoastr">
+                <div class="toast-body @Model.myToaster.CssClass">
+                    @Model.myToaster.Message
+                </div>
             </div>
+        }
+        <div class="jumbotron jumbotron-fluid bg-dark text-light p-5 rounded">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <img class="img-fluid rounded-circle" src="~/images/elf-warrior.jpg" />
+                    </div>
 
-            <div class="col-lg-8">
-                <div class="container border border-light rounded p-3">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <p>Name:</p>
+                    <div class="col-lg-8">
+                        <div class="container border border-light rounded p-3">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p>Name:</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>@Model.kid.Name</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>Available point:</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>@Model.kid.TotalPoint</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p>Total tasks given:</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>100</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>Pending tasks:</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>70</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p>Task completed:</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>30</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>Rewards acquired:</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>2</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <p>@Model.kid.Name</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>Available point:</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>@Model.kid.TotalPoint</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <p>Total tasks given:</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>100</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>Pending tasks:</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>70</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <p>Task completed:</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>30</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>Rewards acquired:</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>2</p>
-                        </div>
+                        <a class="btn btn-outline-warning mt-4"
+                           asp-controller="Kid"
+                           asp-action="Edit"
+                           asp-route-id="@Model.kid.KidId">Edit</a>
                     </div>
                 </div>
-                <a class="btn btn-outline-warning mt-4"
-                   asp-controller="Kid"
-                   asp-action="Edit"
-                   asp-route-id="@Model.kid.KidId">Edit</a>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="border bg-dark border-light p-5 mb-5 rounded">
-    <div class="container">
-        <div class="d-flex flex-row justify-content-between">
-            <h1>Task List</h1>
-            <a asp-controller="VTask"
-               asp-action="Create"
-               asp-route-KidId="@Model.kid.KidId"
-               class="btn btn-outline-primary mt-4 mb-3">Add Task</a>
-        </div>
-    </div>
-    @if (@Model.currentKidVTasks.Count() != 0)
-    {
-        <form asp-action="Details" method="get" class="form-inline">
-            <div class="form-actions no-color">
-                <p>
-                    Find by Description:
-                    <input type="hidden" name="KidId" asp-for="@Model.kid.KidId" />
-                    <input type="text" name="SearchString" value="@ViewData["currentFilter"]" class="form-control" />
-                    <input type="submit" value="Search" class="btn btn-outline-light" /> |
-                    <a asp-action="Details"
-                       asp-route-KidId="@Model.kid.KidId">Back to Full List</a>
-                </p>
+        <div class="border bg-dark border-light p-5 mb-5 rounded">
+            <div class="container">
+                <div class="d-flex flex-row justify-content-between">
+                    <h1>Task List</h1>
+                    <a asp-controller="VTask"
+                       asp-action="Create"
+                       asp-route-KidId="@Model.kid.KidId"
+                       class="btn btn-outline-primary mt-4 mb-3">Add Task</a>
+                </div>
             </div>
-        </form>
-        <table class="table table-striped  text-light border-light listTable">
-            <thead>
-                <tr>
-                    <th>
-                        <a asp-action="Details"
-                           asp-route-KidId="@Model.kid.KidId"
-                           asp-route-sortOrder="@ViewData["NameSortParm"]"
-                           asp-route-currentFilter="@ViewData["CurrentFilter"]">Description</a>
-                    </th>
-                    <th>
-                        <a asp-action="Details"
-                           asp-route-KidId="@Model.kid.KidId"
-                           asp-route-sortOrder="@ViewData["PointSortParm"]"
-                           asp-route-currentFilter="@ViewData["CurrentFilter"]">Point</a>
-                    </th>
-                    <th>Done</th>
-                    <th>Kid Id</th>
-                    <th></th>
-                </tr>
-            </thead>
-            @foreach (var vTask in Model.paginatedList)
+            @if (@Model.currentKidVTasks.Count() != 0)
             {
-                <partial name="_VTaskPartial" model="vTask" />
-            }
-        </table>
-
-        var prevDisabled = !Model.paginatedList.HasPreviousPage ? "disabled" : "";
-        var nextDisabled = !Model.paginatedList.HasNextPage ? "disabled" : "";
-
-        <a asp-action="Details"
-           asp-route-KidId="@Model.kid.KidId"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-pageNumber="@(Model.paginatedList.PageIndex - 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           class="btn btn-outline-light @prevDisabled">
-            Previous
-        </a>
-        <a asp-action="Details"
-           asp-route-KidId="@Model.kid.KidId"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-pageNumber="@(Model.paginatedList.PageIndex + 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           class="btn btn-outline-light @nextDisabled">
-            Next
-        </a>
-    }
-    else
-    {
-        <p>Please add Tasks to the list</p>
-    }
-</div>
-<div class="border border-light p-5 mb-5 rounded">
-    <div class="d-flex flex-row justify-content-between">
-        <h1>Available Rewards:</h1>
-        <a asp-controller="Reward"
-           asp-action="Create"
-           asp-route-KidId="@Model.kid.KidId"
-           class="btn btn-outline-primary mt-4 mb-3">Add Reward</a>
-    </div>
-    @if (@Model.currentKidRewards.Count() != 0)
-    {
-        <div class="container">
-            <div class="row">
-                @foreach (var reward in Model.currentKidRewards)
-                {
-                    @if (reward.Acquired == false)
+                <form asp-action="Details" method="get" class="form-inline">
+                    <div class="form-actions no-color">
+                        <p>
+                            Find by Description:
+                            <input type="hidden" name="KidId" asp-for="@Model.kid.KidId" />
+                            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" class="form-control" />
+                            <input type="submit" value="Search" class="btn btn-outline-light" /> |
+                            <a asp-action="Details"
+                               asp-route-KidId="@Model.kid.KidId">Back to Full List</a>
+                        </p>
+                    </div>
+                </form>
+                <table class="table table-striped  text-light border-light listTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <a asp-action="Details"
+                                   asp-route-KidId="@Model.kid.KidId"
+                                   asp-route-sortOrder="@ViewData["NameSortParm"]"
+                                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Description</a>
+                            </th>
+                            <th>
+                                <a asp-action="Details"
+                                   asp-route-KidId="@Model.kid.KidId"
+                                   asp-route-sortOrder="@ViewData["PointSortParm"]"
+                                   asp-route-currentFilter="@ViewData["CurrentFilter"]">Point</a>
+                            </th>
+                            <th>Done</th>
+                            <th>Kid Id</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @foreach (var vTask in Model.paginatedList)
                     {
-                        <partial name="_RewardCard" model="reward" />
+                        <partial name="_VTaskPartial" model="vTask" />
                     }
+                </table>
+
+                var prevDisabled = !Model.paginatedList.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.paginatedList.HasNextPage ? "disabled" : "";
+
+                <a asp-action="Details"
+                   asp-route-KidId="@Model.kid.KidId"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.paginatedList.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-outline-light @prevDisabled">
+                    Previous
+                </a>
+                <a asp-action="Details"
+                   asp-route-KidId="@Model.kid.KidId"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.paginatedList.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-outline-light @nextDisabled">
+                    Next
+                </a>
+            }
+            else
+            {
+                <p>Please add Tasks to the list</p>
+            }
+        </div>
+        <div class="border border-light p-5 mb-5 rounded">
+            <div class="d-flex flex-row justify-content-between">
+                <h1>Available Rewards:</h1>
+                <a asp-controller="Reward"
+                   asp-action="Create"
+                   asp-route-KidId="@Model.kid.KidId"
+                   class="btn btn-outline-primary mt-4 mb-3">Add Reward</a>
+            </div>
+            <div class="container">
+                @if (@Model.currentKidRewards.Count() != 0)
+                {
+
+                    <div class="row">
+                        @foreach (var reward in Model.currentKidRewards)
+                        {
+                            @if (reward.Acquired == false)
+                            {
+                                <partial name="_RewardCard" model="reward" />
+                            }
+                        }
+                    </div>
+
+                }
+                else
+                {
+                    <p>Please add Reward to the list</p>
+                }
+            </div>
+            </div>
+        <div class="border border-light p-5 mb-5 rounded">
+            <h1>Redeemed Rewards:</h1>
+            <div class="container">
+                @if (@Model.currentKidRewards.Count() != 0)
+                {
+
+                    <div class="row">
+                        @foreach (var reward in Model.currentKidRewards)
+                        {
+                            @if (reward.Acquired == true)
+                            {
+                                <partial name="_RewardCard" model="reward" />
+                            }
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>Please add Reward to the list</p>
                 }
             </div>
         </div>
-    }
-    else
-    {
-        <p>Please add Reward to the list</p>
-    }
-
-</div>
-<div class="border border-light p-5 mb-5 rounded">
-    <h1>Redeemed Rewards:</h1>
-    @if (@Model.currentKidRewards.Count() != 0)
-    {
-        <div class="row">
-            @foreach (var reward in Model.currentKidRewards)
-            {
-                @if (reward.Acquired == true)
-                {
-                    <partial name="_RewardCard" model="reward" />
-                }
-            }
-        </div>
-    }
-    else
-    {
-        <p>Please add Reward to the list</p>
-    }
-</div>
+    </div>

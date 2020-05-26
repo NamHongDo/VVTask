@@ -1,12 +1,12 @@
 ﻿@model Reward
-<div class="col-lg-4 col-md-3 border border-light rounded mb-4 p-4 mr-4">
+<div class=" col-md-3 col-lg-3 border border-light rounded mb-4 p-4">
     <div class="thumbnail">
         <img class="card-img" src="~/images/elf-hunter.jpg" alt="" />
     </div>
     <div class="caption">
         <h2 class="pull-right">@Model.RewardName</h2>
         <h3 class="pull-right">Point cost: @Model.Point</h3>
-        <div class="btn-group mt-4 mb-4">
+        <div class="btn-group mt-2 mb-2">
             <a asp-controller="Reward" asp-action="Redeem" asp-route-id="@Model.RewardId" class="btn btn-outline-primary">Redeem</a>
             <a asp-controller="Reward" asp-action="Details" asp-route-id="@Model.RewardId" class="btn btn-outline-info">Details</a>
             <a asp-controller="Reward" asp-action="Edit" asp-route-id="@Model.RewardId" class="btn btn-outline-warning">Edit</a>

@@ -1,7 +1,18 @@
-﻿.account-form{
+﻿html, body {
+    height: 100%;
+}
+html {
+    scroll-behavior: smooth;
+}
+.account-form {
     height: 30rem;
 }
-
+.landingDiv {
+    height: -webkit-calc(100% - 40px);
+    height: -moz-calc(100% - 40px);
+    height: calc(100% - 40px);
+    width: 100%;
+}
 #mytoastr{
     position:absolute;
     right: 0;
@@ -26,4 +37,17 @@ tbody {
     background-color: #0f4c75;
     color: #bbe1fa;
     border: 1px solid #bbe1fa;
+}
+/*Nav bar*/
+.vNav{
+    position:absolute;
+    top:0;
+}
+
+.seperator{
+    background-color: $theme-green;
+}
+
+.title-text-shadow {
+    text-shadow: 3px 5px 2px #474747;
 }
