@@ -1,17 +1,25 @@
 ﻿@model VTask
 
-<h1>Delete</h1>
+@{
+    string taskComplete1 = @Model.Done == true ? "Complete" : "Not Complete";
+    string taskComplete2 = @Model.Done == true ? "Not Complete":"Complete" ;
+    }
+<div class="custom-page-container d-flex justify-content-center">
+    <div class="confirm-form d-flex flex-column justify-content-start">
+        <h1 class="color-yellow">Change complete status of task from <span class="color-green">@taskComplete1</span>  to <span class="color-green">@taskComplete2</span></h1>
 
-<div class="alert alert-danger">
-    Are you sure you want to change the status of the following task: @Model.Description?
+        <div class="alert alert-orange">
+            Are you sure you want to change the status of the following task: @Model.Description?
+        </div>
+
+        <form method="post">
+            <input type="hidden" asp-for="@Model.VTaskId" />
+            <input type="hidden" asp-for="@Model.Description" class="form-control" />
+            <input type="hidden" asp-for="@Model.Point" class="form-control" />
+            <input type="hidden" asp-for="@Model.Done" class="form-control" />
+            <input type="hidden" asp-for="@Model.KidId" class="form-control" />
+            <button type="submit" class="btn btn-is-yellow"> Yes!</button>
+            <a asp-controller="Kid" asp-action="Details" asp-route-KidId="@Model.KidId" class="btn btn-is-green">Cancel</a>
+        </form>
+    </div>
 </div>
-
-<form method="post">
-    <input type="hidden" asp-for="@Model.VTaskId" />
-    <input type="hidden" asp-for="@Model.Description" class="form-control" />
-     <input type="hidden" asp-for="@Model.Point" class="form-control" />
-    <input type="hidden" asp-for="@Model.Done" class="form-control" />
-    <input type="hidden" asp-for="@Model.KidId" class="form-control" />
-    <button type="submit" class="btn btn-danger"> Yes!</button>
-    <a asp-controller="Kid" asp-action="Details" asp-route-KidId="@Model.KidId">Cancel</a>
-</form>

@@ -1,41 +1,43 @@
 ﻿@model KidProfileViewModel
-<h1>Welcome @Model.userName!</h1>
-<div class="jumbotron jumbotron-fluid bg-dark border-light text-light p-5 rounded">
-    <h1 class="display-4 mt-0"><strong>OverView</strong></h1>
-    <p>Kid profiles: @Model.KidCount </p>
-    <hr class="my-4 bg-light" />
-    <a asp-controller="Kid" asp-action="Create" class="btn btn-outline-primary">Add new Kid</a>
-</div>
-<div class="border bg-dark text-light border-light p-5 rounded">
-    <h1>List of kids</h1>
-    <hr class="my-4 bg-light" />
-    <div class="container">
-        <div class="row">
-            @foreach (var kid in Model.Profiles)
-            {
-                <div class="col-md-3 col-lg-4 py-2">
-                    <div class="card bg-transparent text-white border-light">
-                        <div class="card-body">
-                            <img class="card-img" src="~/images/elf-hunter.jpg" />
-                            <h3 class="card-title">@kid.Name</h3>
-                            <p class="card-text">Accumulated point: @kid.TotalPoint</p>
-                            <a class="btn btn-outline-info"
-                               asp-controller="Kid"
-                               asp-action="Details"
-                               asp-route-KidId="@kid.KidId">Details</a>
-                            <a class="btn btn-outline-danger"
-                               asp-controller="Kid"
-                               asp-action="Delete"
-                               asp-route-id="@kid.KidId">Delete</a>
-                        </div>
-                    </div>
-                </div>
-
-            }
+@{
+    int index = Model.userName.IndexOf("@");
+    string username = Model.userName.Substring(0, Model.userName.Length - index - 1);
+}
+    <div class="custom-page-container">
+        <div class="profile-overview">
+            <h3>Welcome <span class="color-green">@username</span></h3>
+            <hr class="bg-light"/>
+            <h4>Profile Overview</h4>
+            <p>Kid profiles: @Model.KidCount </p>
+        </div>
+        <div class="kids-card-section">
+            <h1>Kid List</h1>
+            <a asp-controller="Kid" asp-action="Create" class="btn btn-is-green">Add a new Kid</a>
+            <hr class="my-4 bg-light" />
+            <div id="kid-card-container">
+                    @foreach (var kid in Model.Profiles)
+                    {
+                            <div class="card bg-transparent text-white border-light">
+                                <div class="card-body">
+                                    <figure>
+                                        <img src="~/images/elf-hunter.jpg" />
+                                    </figure>
+                                    <h3 class="card-title">@kid.Name</h3>
+                                    <p class="card-text">Accumulated point: @kid.TotalPoint</p>
+                                    <a class="btn btn-outline-info"
+                                       asp-controller="Kid"
+                                       asp-action="Details"
+                                       asp-route-KidId="@kid.KidId">Details</a>
+                                    <a class="btn btn-is-orange"
+                                       asp-controller="Kid"
+                                       asp-action="Delete"
+                                       asp-route-id="@kid.KidId">Delete</a>
+                                </div>
+                            </div>
+                    }
+            </div>
         </div>
     </div>
-</div>
-
 
 
 

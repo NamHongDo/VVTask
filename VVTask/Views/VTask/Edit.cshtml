@@ -1,32 +1,30 @@
 ﻿@model VTask
 
-    <div class="container">
-        <div class="row align-items-center account-form">
-            <div class="col-md-6 offset-md-3">
-                <h1 class="text-center"> Editing VTask</h1>
-                <form method="post" class="d-flex flex-column  pb-4">
-                    <input type="hidden" asp-for="@Model.VTaskId" />
-                    <input type="hidden" asp-for="@Model.KidId" />
-                    <div class="form-group">
-                        <label asp-for="@Model.Description"></label>
-                        <input asp-for="@Model.Description" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Point"></label>
-                        <input asp-for="@Model.Point" class="form-control" />
-                    </div>
-                    <div class="form-group d-flex flex-row">
-                        <label asp-for="@Model.Done"></label>
-                        <input type="checkbox" asp-for="@Model.Done" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.VType"></label>
-                        <select class="form-control" asp-for="@Model.VType"
-                                asp-items="Html.GetEnumSelectList<VType>()">
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </form>
+<div class="form-page-container">
+    <div class="background-color-theme-secondary rounded form-panel-sm form-panel-md">
+        <h1 class="text-center"> Editing VTask</h1>
+        <form method="post" class="d-flex flex-column">
+            <input type="hidden" asp-for="@Model.VTaskId" />
+            <input type="hidden" asp-for="@Model.KidId" />
+            <div class="form-group">
+                <label asp-for="@Model.Description"></label>
+                <input asp-for="@Model.Description" class="form-control" />
             </div>
-        </div>
+            <div class="form-group">
+                <label asp-for="@Model.Point"></label>
+                <input asp-for="@Model.Point" class="form-control" />
+            </div>
+            <div class="form-group d-flex flex-row">
+                <label asp-for="@Model.Done"></label>
+                <input type="checkbox" asp-for="@Model.Done" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.VType"></label>
+                <select class="form-control" asp-for="@Model.VType"
+                        asp-items="Html.GetEnumSelectList<VType>()">
+                </select>
+            </div>
+            <button type="submit" class="btn btn-is-purple">Save</button>
+        </form>
     </div>
+</div>

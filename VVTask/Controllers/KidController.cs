@@ -42,7 +42,7 @@ namespace VVTask.Controllers
             _userMananger = userMananger;
         }
 
-        public async Task<ViewResult> List( )
+        public async Task<ViewResult> List()
         {
             CheckToast();
             /*need better query*/
