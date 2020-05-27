@@ -1,0 +1,185 @@
+﻿#profile-summary{
+    background-color:$background-secondary;
+    border-radius:5px;
+    padding: 15px 0;
+    color:white;
+    margin-bottom: 30px;
+    figure{
+        border: 5px solid $theme-green;
+        border-radius:5px;
+        max-height:400px;
+        overflow:hidden;
+    }
+}
+
+#vtask-section {
+    background-color: $background-secondary;
+    border-radius: 5px;
+    color: white;
+    padding: 15px 0;
+    margin-bottom: 15px;
+
+    #vs-header {
+        padding: 15px;
+
+        h1 {
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 12px;
+            margin-bottom:24px;
+        }
+    }
+    /* horizontal scrollbar for tables if mobile screen */
+    .customTable {
+        overflow-x: auto;
+        display: block;
+    }
+
+    form {
+        padding: 15px;
+
+        input {
+            width: 100%;
+            margin: 5px auto;
+        }
+    }
+
+    #table-navigation {
+        padding: 0 15px;
+    }
+}
+
+
+.reward-section {
+    background-color: $background-secondary;
+    border-radius: 5px;
+    color: white;
+    padding: 15px;
+    margin-bottom: 15px;
+
+    h1 {
+        margin-top: 24px;
+    }
+
+    .btn {
+        padding: 12px;
+    }
+
+    .reward-card {
+        border: 1px solid white;
+        border-radius:5px;
+        padding:15px;
+        margin-bottom:5px;
+
+        figure {
+            max-height: 300px;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        }
+    }
+
+    @media only screen and (min-width:577px) {
+        #vtask-section {
+            form {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+
+                .btn {
+                    margin: 0 10px;
+                    flex-basis: 30%;
+                }
+            }
+
+            .customTable {
+                margin: 15px;
+                width: 100%;
+                overflow-x: auto;
+                display: contents;
+
+                td {
+                    &:first-child {
+                        width: 25%;
+                    }
+
+                    width: 15%;
+                }
+            }
+        }
+
+            .reward-section {
+                background-color: $background-secondary;
+                border-radius: 5px;
+                color: white;
+                padding: 15px;
+                margin-bottom: 15px;
+
+                h1 {
+                    margin-top: 24px;
+                }
+
+                .btn {
+                    padding: 12px;
+                }
+
+                .reward-card-container {
+                    display: flex;
+                    justify-content: flex-start;
+
+                    .reward-card {
+                        flex-basis: 35%;
+                        border: 1px solid white;
+                        margin: 5px;
+
+                        figure {
+                            max-height: 300px;
+                            overflow: hidden;
+
+                            img {
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    /*Desktop screen*/
+    @media only screen and (min-width:992px) {
+        #profile-summary {
+            padding: 30px;
+        }
+
+        #vtask-section {
+            padding: 30px;
+        }
+        .reward-section {
+            .reward-card-container {
+                display: flex; 
+
+                .reward-card {
+                    flex-basis: 20%;
+                    border: 1px solid white;
+                    margin: 5px;
+
+                    figure {
+                        max-height: 300px;
+                        overflow: hidden;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }

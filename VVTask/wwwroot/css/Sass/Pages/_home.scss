@@ -1,6 +1,6 @@
 ﻿/*Mobile screen*/
 #landingDiv {
-    height: 100vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
 
@@ -228,17 +228,6 @@
             display: flex;
             align-items: flex-start;
             justify-content: center;
-
-            .btn {
-                color: white;
-                border: 2px solid #7510F7;
-                border-radius: 290486px;
-
-                &:hover {
-                    background-color: #7510F7;
-                    transition-duration: 0.4s;
-                }
-            }
         }
     }
 }
@@ -307,17 +296,6 @@
 
                 h3 {
                     color: white;
-                }
-            }
-
-            .btn {
-                color: white;
-                border: 2px solid #7510F7;
-                border-radius: 290486px;
-
-                &:hover {
-                    background-color: #7510F7;
-                    transition-duration: 0.4s;
                 }
             }
         }

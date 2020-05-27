@@ -1,15 +1,21 @@
 ﻿@model Kid
 
-<h2>Add a kid</h2>
-<form method="post">
-    <div class="form-group">
-        <label asp-for="@Model.Name"></label>
-        <input asp-for="@Model.Name" class="form-control" />
-        <input type="hidden" asp-for="@Model.ApplicationUserId" />
+    <div class="form-page-container">
+        <div class="background-color-theme-secondary rounded form-panel-sm form-panel-md">
+            <h1 class="text-center">
+                Add a kid
+            </h1>
+            <form method="post" class="d-flex flex-column">
+                <div class="form-group">
+                    <label asp-for="@Model.Name"></label>
+                    <input asp-for="@Model.Name" class="form-control" />
+                    <input type="hidden" asp-for="@Model.ApplicationUserId" />
+                </div>
+                <button type="submit" class="btn btn-is-purple"
+                        asp-controller="Kid"
+                        asp-action="Create">
+                    Create
+                </button>
+            </form>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary"
-            asp-controller="Kid"
-            asp-action="Create">
-        Create
-    </button>
-</form>

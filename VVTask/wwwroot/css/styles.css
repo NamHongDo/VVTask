@@ -307,9 +307,6 @@ template {
 html, body {
   height: 100%; }
 
-html {
-  scroll-behavior: smooth; }
-
 .account-form {
   height: 30rem; }
 
@@ -342,16 +339,94 @@ tbody {
   border: 1px solid #bbe1fa; }
 
 /*Nav bar*/
-.vNav {
-  position: absolute;
-  top: 0; }
-
 .seperator {
   background-color: #14a76c; }
 
 .title-text-shadow {
   text-shadow: 3px 5px 2px #474747; }
 
+.background-color-theme-secondary {
+  background-color: #303030; }
+
+/*Form*/
+.form-page-container {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .form-page-container h1 {
+    color: #14a76c; }
+  .form-page-container p, .form-page-container label {
+    color: white; }
+
+.form-panel-md {
+  padding: 50px;
+  width: 90%; }
+
+/*Button*/
+.btn-is-yellow {
+  color: #ffe400;
+  border: 2px solid #ffe400; }
+  .btn-is-yellow:hover {
+    background-color: #ffe400;
+    transition-duration: 0.4s;
+    color: black; }
+
+.btn-is-green {
+  color: #14a76c;
+  border: 2px solid #14a76c; }
+  .btn-is-green:hover {
+    background-color: #14a76c;
+    transition-duration: 0.4s;
+    color: black; }
+
+.btn-is-orange {
+  color: #ff652f;
+  border: 2px solid #ff652f; }
+  .btn-is-orange:hover {
+    background-color: #ff652f;
+    transition-duration: 0.4s;
+    color: black; }
+
+.btn-is-purple {
+  color: white;
+  border: 2px solid #7510F7;
+  border-radius: 290486px; }
+  .btn-is-purple:hover {
+    background-color: #7510F7;
+    transition-duration: 0.4s;
+    color: white; }
+
+.color-theme-green {
+  color: #7510F7; }
+  .color-theme-green:hover {
+    color: #14a76c;
+    text-decoration: none; }
+
+.confirm-form {
+  width: 90%; }
+
+.alert-orange {
+  background-color: #ff652f;
+  color: black; }
+
+.color-green {
+  color: #14a76c; }
+
+.color-yellow {
+  color: #ffe400; }
+
+.color-orange {
+  color: #ff652f; }
+
+@media only screen and (min-width: 577px) {
+  .form-panel-md {
+    padding: 50px;
+    width: 50%; }
+  .confirm-form {
+    width: 50%; } }
+
+/*Desktop screen*/
 a {
   color: #3282b8; }
 
@@ -363,9 +438,14 @@ body {
   font-family: "Roboto", sans-serif;
   font-size: 16px; }
   body h1 {
-    font-weight: 900; }
+    font-weight: 900;
+    margin-top: 0; }
   body p {
     font-weight: 300; }
+
+.custom-page-container {
+  padding: 15px;
+  min-height: 70vh; }
 
 footer {
   padding: 75px 0; }
@@ -393,9 +473,19 @@ footer {
       background-color: #ff652f;
       color: black; }
 
+@media only screen and (min-width: 577px) {
+  .form-panel-md {
+    padding: 50px;
+    width: 50%; } }
+
+/*Desktop screen*/
+@media only screen and (min-width: 992px) {
+  .custom-page-container {
+    padding: 50px; } }
+
 /*Mobile screen*/
 #landingDiv {
-  height: 100vh;
+  height: 90vh;
   display: flex;
   flex-direction: column; }
   #landingDiv h1 {
@@ -553,13 +643,6 @@ footer {
       display: flex;
       align-items: flex-start;
       justify-content: center; }
-      #web-display .image-overlay .overlay-bottom .btn {
-        color: white;
-        border: 2px solid #7510F7;
-        border-radius: 290486px; }
-        #web-display .image-overlay .overlay-bottom .btn:hover {
-          background-color: #7510F7;
-          transition-duration: 0.4s; }
 
 #video-display {
   padding: 30px 15px;
@@ -608,13 +691,6 @@ footer {
         padding: 30px 0; }
         #home-footer .card .card-body #collapseAnchor h3 {
           color: white; }
-      #home-footer .card .card-body .btn {
-        color: white;
-        border: 2px solid #7510F7;
-        border-radius: 290486px; }
-        #home-footer .card .card-body .btn:hover {
-          background-color: #7510F7;
-          transition-duration: 0.4s; }
 
 /*Desktop screen*/
 @media only screen and (min-width: 992px) {
@@ -740,3 +816,175 @@ footer {
         #video-display #video-group .video-container iframe {
           width: 100%;
           min-height: 300px; } }
+
+.profile-overview {
+  color: white;
+  background-color: #303030;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 30px; }
+
+.kids-card-section {
+  color: white;
+  background-color: #303030;
+  padding: 15px;
+  border-radius: 5px; }
+  .kids-card-section #kid-card-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; }
+  .kids-card-section .card {
+    margin-bottom: 20px; }
+    .kids-card-section .card figure {
+      max-height: 300px;
+      overflow: hidden; }
+      .kids-card-section .card figure img {
+        width: 100%;
+        height: 100%; }
+
+@media only screen and (min-width: 577px) {
+  .profile-overview {
+    padding: 30px; }
+  .kids-card-section {
+    padding: 30px; }
+    .kids-card-section #kid-card-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start; }
+    .kids-card-section .card {
+      flex-basis: 30%;
+      margin-left: 30px;
+      margin-bottom: 20px; }
+      .kids-card-section .card:first-child {
+        margin-left: 0; }
+      .kids-card-section .card figure {
+        max-height: 400px;
+        overflow: hidden; }
+        .kids-card-section .card figure img {
+          width: 100%;
+          height: 100%; } }
+
+/*Desktop screen*/
+@media only screen and (min-width: 992px) {
+  .kids-card-section .card {
+    flex-basis: 23%; } }
+
+#profile-summary {
+  background-color: #303030;
+  border-radius: 5px;
+  padding: 15px 0;
+  color: white;
+  margin-bottom: 30px; }
+  #profile-summary figure {
+    border: 5px solid #14a76c;
+    border-radius: 5px;
+    max-height: 400px;
+    overflow: hidden; }
+
+#vtask-section {
+  background-color: #303030;
+  border-radius: 5px;
+  color: white;
+  padding: 15px 0;
+  margin-bottom: 15px;
+  /* horizontal scrollbar for tables if mobile screen */ }
+  #vtask-section #vs-header {
+    padding: 15px; }
+    #vtask-section #vs-header h1 {
+      margin-top: 24px; }
+    #vtask-section #vs-header .btn {
+      padding: 12px;
+      margin-bottom: 24px; }
+  #vtask-section .customTable {
+    overflow-x: auto;
+    display: block; }
+  #vtask-section form {
+    padding: 15px; }
+    #vtask-section form input {
+      width: 100%;
+      margin: 5px auto; }
+  #vtask-section #table-navigation {
+    padding: 0 15px; }
+
+.reward-section {
+  background-color: #303030;
+  border-radius: 5px;
+  color: white;
+  padding: 15px;
+  margin-bottom: 15px; }
+  .reward-section h1 {
+    margin-top: 24px; }
+  .reward-section .btn {
+    padding: 12px; }
+  .reward-section .reward-card {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 5px; }
+    .reward-section .reward-card figure {
+      max-height: 300px;
+      overflow: hidden; }
+      .reward-section .reward-card figure img {
+        width: 100%;
+        height: 100%; }
+
+@media only screen and (min-width: 577px) {
+  #vtask-section form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; }
+    #vtask-section form .btn {
+      margin: 0 10px;
+      flex-basis: 30%; }
+  #vtask-section .customTable {
+    margin: 15px;
+    width: 100%;
+    overflow-x: auto;
+    display: contents; }
+    #vtask-section .customTable td {
+      width: 15%; }
+      #vtask-section .customTable td:first-child {
+        width: 25%; }
+  .reward-section {
+    background-color: #303030;
+    border-radius: 5px;
+    color: white;
+    padding: 15px;
+    margin-bottom: 15px; }
+    .reward-section h1 {
+      margin-top: 24px; }
+    .reward-section .btn {
+      padding: 12px; }
+    .reward-section .reward-card-container {
+      display: flex;
+      justify-content: flex-start; }
+      .reward-section .reward-card-container .reward-card {
+        flex-basis: 35%;
+        border: 1px solid white;
+        margin: 5px; }
+        .reward-section .reward-card-container .reward-card figure {
+          max-height: 300px;
+          overflow: hidden; }
+          .reward-section .reward-card-container .reward-card figure img {
+            width: 100%;
+            height: 100%; } }
+
+/*Desktop screen*/
+@media only screen and (min-width: 992px) {
+  #profile-summary {
+    padding: 30px; }
+  #vtask-section {
+    padding: 30px; }
+  .reward-section .reward-card-container {
+    display: flex; }
+    .reward-section .reward-card-container .reward-card {
+      flex-basis: 20%;
+      border: 1px solid white;
+      margin: 5px; }
+      .reward-section .reward-card-container .reward-card figure {
+        max-height: 300px;
+        overflow: hidden; }
+        .reward-section .reward-card-container .reward-card figure img {
+          width: 100%;
+          height: 100%; } }
