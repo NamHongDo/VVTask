@@ -1,10 +1,14 @@
-﻿@model Kid
+﻿@model KidEditViewModel
+@{ 
+    var photoPath = "~/Images/" + (Model.ExistingPhotoPath ?? "defaultProfileImage.jpg");
+}
     <div class="form-page-container">
         <div class="background-color-theme-secondary rounded form-panel-sm form-panel-md">
             <h1 class="text-center"> Editing Kid Profile</h1>
-            <form method="post"  class="d-flex flex-column">
+            <form method="post" class="d-flex flex-column" enctype="multipart/form-data">
                 <input type="hidden" asp-for="@Model.ApplicationUserId" />
                 <input type="hidden" asp-for="@Model.KidId" />
+                <input type="hidden" asp-for="ExistingPhotoPath" />
                 <div class="form-group">
                     <label asp-for="@Model.Name"></label>
                     <input asp-for="@Model.Name" class="form-control" />
@@ -13,7 +17,19 @@
                     <label asp-for="@Model.TotalPoint"></label>
                     <input asp-for="@Model.TotalPoint" class="form-control" />
                 </div>
+                <div class="form-group">
+                    <label asp-for="Photo" class="col-form-label"></label>
+                    <div class="custom-file">
+                        <input asp-for="Photo" class="form-control custom-file-input" />
+                        <label class="custom-file-label btn-is-green">Click here to change photo</label>
+                    </div>
+                </div>
+                <figure id="temptFigure">
+                    <img src="@photoPath" asp-append-version="true" />
+                </figure>
+                <div asp-validation-summary="All" class="tex-danger"></div>
                 <button type="submit" class="btn btn-is-purple">Save</button>
+                <a asp-action="Details" asp-controller="kid" asp-route-KidId="@Model.KidId">Cancel</a>
             </form>
         </div>
 </div>

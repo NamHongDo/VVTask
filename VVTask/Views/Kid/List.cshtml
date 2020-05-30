@@ -1,4 +1,5 @@
 ﻿@model KidProfileViewModel
+<!--Extract user name from email before at sign-->
 @{
     int index = Model.userName.IndexOf("@");
     string username = Model.userName.Substring(0, Model.userName.Length - index - 1);
@@ -17,10 +18,11 @@
             <div id="kid-card-container">
                     @foreach (var kid in Model.Profiles)
                     {
+                            var photoPath = "~/Images/" + (kid.PhotoPath ?? "defaultProfileImage.jpg");
                             <div class="card bg-transparent text-white border-light">
                                 <div class="card-body">
                                     <figure>
-                                        <img src="~/images/elf-hunter.jpg" />
+                                        <img src="@photoPath" asp-append-version="true"/>
                                     </figure>
                                     <h3 class="card-title">@kid.Name</h3>
                                     <p class="card-text">Accumulated point: @kid.TotalPoint</p>

@@ -41,11 +41,13 @@ namespace VVTask
             services.AddScoped<IKidRepository, KidRepository>();
             services.AddMvc(options =>
             {
-                var policy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
+            options.EnableEndpointRouting = false;
+            var policy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+            options.Filters.Add(new AuthorizeFilter(policy));
             }).AddXmlSerializerFormatters();
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,12 +72,11 @@ namespace VVTask
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            app.UseMvc(routes =>
             {
-                endpoints.MapControllerRoute(
+                routes.MapRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}"
-                    );
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
