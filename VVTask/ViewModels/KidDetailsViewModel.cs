@@ -16,5 +16,6 @@ namespace VVTask.ViewModels
         [BindProperty]
         public Toaster myToaster { get; set; }
         public PaginatedList<VTask> paginatedList { get; set; }
+        public string PhotoPath { get; set; }
     }
 }

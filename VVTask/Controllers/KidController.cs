@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +25,7 @@ namespace VVTask.Controllers
         private readonly AppDbContext _appDbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<ApplicationUser> _userMananger;
+        private readonly IWebHostEnvironment _hostinEnvironment;
 
         [BindProperty]
         public Toaster MyToaster { get; set; }
@@ -32,7 +35,8 @@ namespace VVTask.Controllers
             IRewardRepository rewardRepository,
             AppDbContext appDbContext,
             IHttpContextAccessor httpContextAccessor,
-            UserManager<ApplicationUser> userMananger)
+            UserManager<ApplicationUser> userMananger,
+            IWebHostEnvironment hostinEnvironment)
         {
             _kidRepository = kidRepository;
             _vTaskRepository = vTaskRepository;
@@ -40,6 +44,7 @@ namespace VVTask.Controllers
             _appDbContext = appDbContext;
             _httpContextAccessor = httpContextAccessor;
             _userMananger = userMananger;
+            _hostinEnvironment = hostinEnvironment;
         }
 
         public async Task<ViewResult> List()
@@ -113,7 +118,8 @@ namespace VVTask.Controllers
                 currentKidVTasks = vTasks,
                 currentKidRewards = rewards,
                 myToaster = MyToaster,
-                paginatedList = paginatedList
+                paginatedList = paginatedList,
+                PhotoPath = currentKid.PhotoPath
             };
             return View(kidDetailsViewModel);
         }
@@ -126,47 +132,80 @@ namespace VVTask.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Kid profile)
+        public async Task<ActionResult> Create(KidCreateViewModel model)
         {
             var username = _httpContextAccessor.HttpContext?.User.Identity.Name;
             var currentUserProfile = _userMananger.Users.FirstOrDefault(u => u.UserName == username);
+
             if (ModelState.IsValid)
             {
-                profile.ApplicationUserId = currentUserProfile.Id;
-                _kidRepository.Add(profile);
+                string uniqueFileName = ProcessUploadedImage(model);
+                Kid newKid = new Kid()
+                {
+                    Name = model.Name,
+                    PhotoPath = uniqueFileName,
+                    ApplicationUserId = currentUserProfile.Id
+                };
+
+                _kidRepository.Add(newKid);
                 await _kidRepository.CommitAsync();
                 var toastobj = Helper.getToastObj("Kid profile was created successfully", "alert-success");
                 TempData.Put("toast",toastobj);
                 return RedirectToAction("List");
             }
-            return View(profile);
+            return View(model);
         }
     
         [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
-            var profile = await _kidRepository.GetProfileById(id);
-            if (profile == null)
+            var kidProfile = await _kidRepository.GetProfileById(id);
+            if (kidProfile == null)
                 return NotFound();
-            return View(profile);
+
+            KidEditViewModel model = new KidEditViewModel() {
+                KidId = kidProfile.KidId,
+                Name = kidProfile.Name,
+                TotalPoint = kidProfile.TotalPoint,
+                ExistingPhotoPath = kidProfile.PhotoPath,
+                ApplicationUserId = kidProfile.ApplicationUserId
+            };
+            return View(model);
         }
 
         // submitting new information for a existing vtask
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Kid profile)
+        public async Task<ActionResult> Edit(KidEditViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _kidRepository.Update(profile);
+                Kid existingKid = await _kidRepository.GetProfileById(model.KidId);
+                existingKid.Name = model.Name;
+                existingKid.TotalPoint = model.TotalPoint;
+                existingKid.ApplicationUserId = model.ApplicationUserId;
+                if (model.Photo != null)
+                {
+                    if (model.ExistingPhotoPath != null)
+                    {
+                        string filePath = Path.Combine(
+                            _hostinEnvironment.WebRootPath,
+                            "images",
+                            model.ExistingPhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+                   existingKid.PhotoPath = ProcessUploadedImage(model);
+                }  
+                _kidRepository.Update(existingKid);
                 await _appDbContext.SaveChangesAsync();
                 //await _kidRepository.CommitAsync();
                 var toastobj = Helper.getToastObj("Kid profile was edited successfully", "alert-success");
                 TempData.Put("toast", toastobj);
-                return RedirectToAction("Details", new { profile.KidId });
+                return RedirectToAction("Details", new { existingKid.KidId });
             }
-            return View(profile);
+            return View(model);
         }
+
         [HttpGet]
         public async Task<ActionResult> Delete(int id)
         {
@@ -178,13 +217,21 @@ namespace VVTask.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int KidId)
+        public async Task<ActionResult> DeleteConfirmed(int KidId,string? ExistingPhotoPath)
         {
             if (ModelState.IsValid)
             {
                 await _kidRepository.Delete(KidId);
                 await _kidRepository.CommitAsync();
                 var toastobj = Helper.getToastObj("Kid profile was Deleted successfully", "alert-success");
+                if (ExistingPhotoPath != null)
+                {
+                    string filePath = Path.Combine(
+                        _hostinEnvironment.WebRootPath,
+                        "images",
+                        ExistingPhotoPath);
+                    System.IO.File.Delete(filePath);
+                }
                 TempData.Put("toast", toastobj);
                 return RedirectToAction("List");
             }
@@ -202,5 +249,23 @@ namespace VVTask.Controllers
                 MyToaster = new Toaster() { };
             }
         }
+
+        private string ProcessUploadedImage(KidCreateViewModel model)
+        {
+            string uniqueFileName = null;
+            if (model.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(_hostinEnvironment.WebRootPath, "images/");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using(var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.Photo.CopyTo(fileStream);
+                }
+            }
+
+            return uniqueFileName;
+        }
+
     }
 }

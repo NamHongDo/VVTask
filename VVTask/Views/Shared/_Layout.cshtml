@@ -70,8 +70,10 @@
             @RenderBody()
         </main>
     </div>
-
-    @RenderSection("Scripts", required: false)
+    @if (IsSectionDefined("Scripts"))
+    {
+        @RenderSection("Scripts", required: true)
+    }
     <script src="~/js/site.js" asp-append-version="true"></script>
     <footer class="footer text-light text-center">
         <div id="footer-buffer"></div>

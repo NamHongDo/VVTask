@@ -11,7 +11,10 @@
                 <input type="hidden" asp-for="@Model.Name" />
                 <input type="hidden" asp-for="@Model.KidId" />
                 <input type="hidden" asp-for="@Model.ApplicationUserId" />
-                <button type="submit" class="btn btn-is-orange" asp-route-KidId="@Model.KidId"> Yes!</button>
+                <input type="hidden" asp-for="@Model.PhotoPath" />
+                <button type="submit" class="btn btn-is-orange" 
+                        asp-route-KidId="@Model.KidId"
+                        asp-route-ExistingPhotoPath="@Model.PhotoPath"> Yes!</button>
                 <a asp-controller="KidProfile" asp-action="List" class="btn btn-is-green">Cancel</a>
             </form>
         </div>
