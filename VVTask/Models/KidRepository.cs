@@ -54,6 +54,5 @@ namespace VVTask.Models
             entity.State = EntityState.Modified;
             return updatedProfile;
         }
-
     }
 }

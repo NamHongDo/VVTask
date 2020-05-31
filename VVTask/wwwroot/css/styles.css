@@ -419,6 +419,9 @@ tbody {
 .color-orange {
   color: #ff652f; }
 
+input.input-validation-error {
+  border: 3px solid #ff652f; }
+
 @media only screen and (min-width: 577px) {
   .form-panel-md {
     padding: 50px;

@@ -9,7 +9,9 @@ namespace VVTask.Models
     public class Kid
     {
         public int KidId { get; set; }
+        [Required , MaxLength(40)]
         public string Name { get; set; }
+        [Required]
         public int TotalPoint { get; set; } = 0;
         public List<VTask> VTasks { get; set; }
         public List<Reward> Rewards { get; set; }

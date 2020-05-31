@@ -10,7 +10,9 @@ namespace VVTask.Models
     public class VTask
     {
         public int VTaskId { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public int Point { get; set; }
         public bool Done { get; set; } = false;
         public VType VType { get; set; }
