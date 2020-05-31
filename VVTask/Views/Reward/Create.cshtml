@@ -3,18 +3,22 @@
         <div class="background-color-theme-secondary rounded form-panel-sm form-panel-md">
                 <h1 class="text-center"> Creating Reward </h1>
                 <form method="post" class="d-flex flex-column">
+                    <div asp-validation-summary="All" class="color-orange"></div>
                     <input type="hidden" asp-for="@Model.KidId" class="form-control" />
                     <div class="form-group">
                         <label asp-for="@Model.RewardName">Prize name</label>
                         <input asp-for="@Model.RewardName" class="form-control" />
+                        <span asp-validation-for="@Model.RewardName" class="color-orange"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Description"></label>
+                        <label asp-for="@Model.Description">Description</label>
                         <input asp-for="@Model.Description" class="form-control" />
+                        <span asp-validation-for="@Model.Description" class="color-orange"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="@Model.Point"></label>
                         <input asp-for="@Model.Point" class="form-control" />
+                        <span asp-validation-for="@Model.Point" class="color-orange"></span>
                     </div>
                     <button type="submit" class="btn btn-is-purple"
                             asp-controller="Reward"

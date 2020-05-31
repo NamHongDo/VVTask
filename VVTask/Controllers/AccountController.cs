@@ -35,6 +35,12 @@ namespace VVTask.Controllers
         {
             if (ModelState.IsValid)
             {
+                var isEmailAlreadyExists = _userManager.Users.Any(x => x.Email == model.Email);
+                if (isEmailAlreadyExists)
+                {
+                    ModelState.AddModelError("Email", "User with this email already exists");
+                    return View(model);
+                }
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
