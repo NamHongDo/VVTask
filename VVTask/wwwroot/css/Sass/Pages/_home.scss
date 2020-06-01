@@ -46,8 +46,11 @@
 #bioDiv {
     display: flex;
     flex-direction: column;
+    justify-content:center;
+    align-items:center;
     background-color: $theme-green;
-    height: 70vh;
+    height: 75vh;
+    min-height: 20rem;
     width: 100%;
 
     #bio-top {
@@ -63,81 +66,19 @@
         justify-content: center;
         font-weight: 300;
         text-align:center;
+        width: 90%;
     }
 }
 
 #overlap-bio {
     margin-top: -100px;
     margin-bottom: 100px;
-}
-#product-card {
-    .card {
-        background-color: $background-secondary;
 
-        .product-icon {
-            font-size: 60px !important;
-            display: flex;
-            justify-content: center;
-            padding-top: 50px;
-            padding-bottom: 30px;
-        }
-
-        &:first-child {
-            border-radius: 5px 5px 0 0;
-
-            .btn {
-                border: 2px solid $theme-yellow;
-                color: $theme-yellow;
-            }
-
-            .btn:hover {
-                border: 2px solid $theme-yellow;
-                background-color: $theme-yellow;
-                color: $background-primary;
-            }
-
-            h4, .fas {
-                color: $theme-yellow;
-            }
-        }
-
-        &:nth-child(2) {
-            border-radius: 0;
-
-            .btn {
-                border: 2px solid $theme-green;
-                color: $theme-green;
-            }
-
-            .btn:hover {
-                border: 2px solid $theme-green;
-                background-color: $theme-green;
-                color: $background-primary;
-            }
-
-            h4, .far {
-                color: $theme-green;
-            }
-        }
-
-        &:nth-child(3) {
-            border-radius: 0 0 5px 5px;
-
-            .btn {
-                border: 2px solid $theme-orange;
-                color: $theme-orange;
-            }
-
-            .btn:hover {
-                border: 2px solid $theme-orange;
-                background-color: $theme-orange;
-                color: $background-primary;
-            }
-
-            h4, .fas {
-                color: $theme-orange;
-            }
-        }
+    .product-icon {
+        font-size: 60px !important;
+        display: flex;
+        justify-content: center;
+        padding-bottom: 2rem;
     }
 }
 
@@ -302,6 +243,20 @@
     }
 }
 @media only screen and (min-width:577px) {
+
+    #bioDiv {
+        padding: 2rem 1rem;
+        height: 60vh;
+        max-height:25rem;
+        #bio-bottom {
+            display: flex;
+            flex-basis: 80%;
+            justify-content: center;
+            font-weight: 300;
+            text-align: center;
+            width: 80%;
+        }
+    }
 }
 
 /*Desktop screen*/
@@ -348,7 +303,7 @@
         }
     }
     #bioDiv {
-        height: 50vh;
+        max-height:30rem;
         -webkit-box-shadow: -1px 2px 15px 4px rgba(0,0,0,0.75);
         -moz-box-shadow: -1px 2px 15px 4px rgba(0,0,0,0.75);
         box-shadow: -1px 2px 15px 4px rgba(0,0,0,0.75);
@@ -361,7 +316,7 @@
             flex-basis: 70%;
             font-size: 20px;
             line-height: 30px;
-            width: 35%;
+            max-width: 50rem;
         }
     }
 
@@ -450,11 +405,15 @@
     #web-display {
         padding-top: 50px;
         padding-bottom: 100px;
-
+        min-height: 100vh;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-evenly;
         .web-work-header {
             padding-bottom: 60px;
 
             h1 {
+                margin-top: 3rem;
                 font-size: 50px;
             }
         }
@@ -464,6 +423,7 @@
             width: 80%;
             display: flex;
             justify-content: space-evenly;
+            align-items: center;
 
             .product-tab {
                 flex-basis: 30%;
@@ -474,11 +434,13 @@
     #video-display {
         padding-top: 50px;
         padding-bottom: 100px;
+        min-height: 100vh;
 
         #video-work-header {
             padding-bottom: 60px;
 
             h1 {
+                margin-top: 3rem;
                 font-size: 50px;
             }
         }
