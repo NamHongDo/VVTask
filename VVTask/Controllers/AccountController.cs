@@ -1,10 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using MimeKit;
+using NETCore.MailKit.Core;
 using VVTask.Models;
 using VVTask.ViewModels;
 
@@ -14,13 +22,23 @@ namespace VVTask.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<AccountController> _logger;
+        private readonly IEmailService _emailService;
+        private readonly AppDbContext _appDbContext;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser>signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<AccountController> logger,
+            IEmailService emailService,
+            AppDbContext appDbContext,
+            IWebHostEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
+            _emailService = emailService;
+            _appDbContext = appDbContext;
         }
         [HttpGet]
         [AllowAnonymous]
@@ -49,20 +67,32 @@ namespace VVTask.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    if(_signInManager.IsSignedIn(User)&& User.IsInRole("admin"))
-                    {
-                        return RedirectToAction("ListUsers", "admin");
-                    }
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                    await SendConfirmationEmail(model, user);
+                    return RedirectToAction("EmailVerification", "Account");
                 }
-                foreach(var error in result.Errors)
+
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
             }
             return View(model);
         }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> VerifyEmail(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest();
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if(result.Succeeded)
+            {
+                return View();
+            }
+            return BadRequest();
+        }
+        [AllowAnonymous]
+        public IActionResult EmailVerification() => View();
 
         [HttpPost]
         public async Task<IActionResult> Logout()
@@ -84,6 +114,14 @@ namespace VVTask.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                
+                if(user !=null && !user.EmailConfirmed &&
+                    (await _userManager.CheckPasswordAsync(user, model.Password)))
+                {
+                    ModelState.AddModelError(string.Empty, "Email not confirmed yet");
+                    return View(model);
+                }
                 var result = await _signInManager.PasswordSignInAsync(
                     model.Email, 
                     model.Password, 
@@ -94,7 +132,8 @@ namespace VVTask.Controllers
                     if (!string.IsNullOrEmpty(returnUrl))
                     {
                         return LocalRedirect(returnUrl);
-                    }else
+                    }
+                    else
                     {
                         return RedirectToAction("index", "home");
                     }
@@ -104,5 +143,53 @@ namespace VVTask.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task <IActionResult> ConfirmEmail (string userId, string token)
+        {
+            if(userId == null || token == null)
+            {
+                return RedirectToAction("list", "kid");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The User ID {userId} is invalid";
+                return View("NotFound");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return View();
+            }
+
+            ViewBag.ErrorTitle = "Email cannot be confirmed";
+            return View("Error");
+        }
+
+        private async Task SendConfirmationEmail(RegisterViewModel model, ApplicationUser user)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var link = Url.Action("VerifyEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme, Request.Host.ToString());
+            //await _emailService.SendAsync("sirsunday89@gmail.com", "Email Verification", $"<a href=\"{link}\">{link}</a>",true);
+            MailMessage mm = new MailMessage();
+            mm.To.Add(model.Email);
+            mm.Subject = "Email verification for VTask";
+            mm.Body = $"<h2>Thank you for registering, please click the bellow button to activate your account</h2>"+
+                $"</br>" +
+                $"<a href=\"{link}\">Activate your account</a>";
+            mm.From = new MailAddress("namkingnet.@gmail.com");
+            mm.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+            SiteEmailSecret siteCredential = await _appDbContext.Secrets.FirstOrDefaultAsync(x => x.secretName == "namkingnet.com");
+            smtp.Port = 587;
+            smtp.UseDefaultCredentials = true;
+            smtp.EnableSsl = true;
+            smtp.Credentials = new System.Net.NetworkCredential("namkingnet@gmail.com", siteCredential.password);
+            smtp.Send(mm);
+        }
     }
 }

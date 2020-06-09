@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 using VVTask.Models;
 
 namespace VVTask
@@ -20,34 +22,35 @@ namespace VVTask
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _config = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration _config { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
             services
-                .AddIdentity<ApplicationUser, IdentityRole>(
-                
-                )
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddIdentity<ApplicationUser, IdentityRole>( options =>
+                {
+                    options.SignIn.RequireConfirmedEmail = true;
+                })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddScoped<IVTaskRepository, VTaskRepository>();
             services.AddScoped<IRewardRepository, RewardRepository>();
             services.AddScoped<IKidRepository, KidRepository>();
             services.AddMvc(options =>
             {
-            options.EnableEndpointRouting = false;
-            var policy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
-            options.Filters.Add(new AuthorizeFilter(policy));
+                options.EnableEndpointRouting = false;
+                var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
             }).AddXmlSerializerFormatters();
-          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

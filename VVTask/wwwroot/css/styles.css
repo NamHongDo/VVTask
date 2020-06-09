@@ -539,6 +539,9 @@ footer {
       background-color: #ff652f;
       color: black; }
 
+.vNav {
+  height: 3rem; }
+
 @media only screen and (min-width: 577px) {
   .form-panel-md {
     padding: 50px;
@@ -551,7 +554,7 @@ footer {
 
 /*Mobile screen*/
 #landingDiv {
-  height: 90vh;
+  height: calc( 100vh - 3rem);
   display: flex;
   flex-direction: column; }
   #landingDiv h1 {
