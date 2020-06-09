@@ -13,6 +13,7 @@ namespace VVTask.Models
         public DbSet<Kid> Kids { get; set; }
         public DbSet<VTask> VTasks { get; set; }
         public DbSet<Reward> Rewards { get; set; }
+        public DbSet<SiteEmailSecret> Secrets { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
 

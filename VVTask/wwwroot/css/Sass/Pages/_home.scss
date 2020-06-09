@@ -1,6 +1,6 @@
 ﻿/*Mobile screen*/
 #landingDiv {
-    height: 90vh;
+    height: calc( 100vh - 3rem);
     display: flex;
     flex-direction: column;
 
@@ -36,11 +36,11 @@
 
     #intro-4 {
         flex-basis: 10%;
-        display:flex;
-        justify-content:center;
+        display: flex;
+        justify-content: center;
         font-size: 40px;
-        align-items:flex-end;
-        padding-bottom:10px;
+        align-items: flex-end;
+        padding-bottom: 10px;
     }
 }
 #bioDiv {
