@@ -41,27 +41,35 @@
                                     <h3>Total tasks given:</h3>
                                 </div>
                                 <div class="col-4">
-                                    <h3>100</h3>
+                                    <h3>@Model.givenTasksCount</h3>
                                 </div>
                                 <div class="col-8">
                                     <h3>Pending tasks:</h3>
                                 </div>
                                 <div class="col-4">
-                                    <h3>70</h3>
+                                    <h3>@Model.pendingTasksCount</h3>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-8">
-                                    <h3>Task completed:</h3>
+                                    <h3>Tasks completed:</h3>
                                 </div>
                                 <div class="col-4">
-                                    <h3>30</h3>
+                                    <h3>@Model.completeTasksCount</h3>
                                 </div>
                                 <div class="col-8">
                                     <h3>Rewards acquired:</h3>
                                 </div>
                                 <div class="col-4">
-                                    <h3>2</h3>
+                                    <h3>@Model.redeemedRewardsCount</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <h3>Rewards available:</h3>
+                                </div>
+                                <div class="col-4">
+                                    <h3>@Model.availableRewardsCount</h3>
                                 </div>
                             </div>
                         </div>

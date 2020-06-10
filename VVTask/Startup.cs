@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using VVTask.Models;
+using VVTask.Others;
 
 namespace VVTask
 {
@@ -43,6 +44,7 @@ namespace VVTask
             services.AddScoped<IVTaskRepository, VTaskRepository>();
             services.AddScoped<IRewardRepository, RewardRepository>();
             services.AddScoped<IKidRepository, KidRepository>();
+            services.AddScoped<IStatistic, Statistic>();
             services.AddMvc(options =>
             {
                 options.EnableEndpointRouting = false;
