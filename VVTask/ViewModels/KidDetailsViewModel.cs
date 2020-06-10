@@ -11,6 +11,11 @@ namespace VVTask.ViewModels
     public class KidDetailsViewModel
     {
         public Kid kid { get; set; }
+        public int givenTasksCount { get; set; }
+        public int pendingTasksCount { get; set; }
+        public int completeTasksCount { get; set; }
+        public int availableRewardsCount { get; set; }
+        public int redeemedRewardsCount { get; set; }
         public IEnumerable<VTask> currentKidVTasks { get; set; }
         public IEnumerable<Reward> currentKidRewards { get; set; }
         [BindProperty]

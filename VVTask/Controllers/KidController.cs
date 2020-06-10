@@ -26,6 +26,7 @@ namespace VVTask.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<ApplicationUser> _userMananger;
         private readonly IWebHostEnvironment _hostinEnvironment;
+        private readonly IStatistic _statistic;
 
         [BindProperty]
         public Toaster MyToaster { get; set; }
@@ -36,7 +37,8 @@ namespace VVTask.Controllers
             AppDbContext appDbContext,
             IHttpContextAccessor httpContextAccessor,
             UserManager<ApplicationUser> userMananger,
-            IWebHostEnvironment hostinEnvironment)
+            IWebHostEnvironment hostinEnvironment,
+            IStatistic statistic)
         {
             _kidRepository = kidRepository;
             _vTaskRepository = vTaskRepository;
@@ -45,6 +47,7 @@ namespace VVTask.Controllers
             _httpContextAccessor = httpContextAccessor;
             _userMananger = userMananger;
             _hostinEnvironment = hostinEnvironment;
+            _statistic = statistic;
         }
 
         public async Task<ViewResult> List()
@@ -65,7 +68,7 @@ namespace VVTask.Controllers
             return View(kidProfileViewModel);
         }
 
-        //View task list of each kid profile
+        //Kid detail view includes: summary, tasks list, available rewards, redeemed reward
         public async Task<ViewResult> Details(
             int KidId, 
             string sortOrder,
@@ -76,8 +79,10 @@ namespace VVTask.Controllers
             CheckToast();
             var currentKid = await _kidRepository.GetProfileById(KidId);
             var rewards = await _rewardRepository.GetAllByKidId(KidId);
+
             int pageSize = 5;
-           
+            
+            //Task table sorting
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["PointSortParm"] = sortOrder == "Point" ? "point_desc" : "Point";
@@ -117,6 +122,11 @@ namespace VVTask.Controllers
                 kid = currentKid,
                 currentKidVTasks = vTasks,
                 currentKidRewards = rewards,
+                givenTasksCount = vTasks.Count(),
+                pendingTasksCount = _statistic.countPendingTask(vTasks),
+                completeTasksCount = _statistic.countCompleteTask(vTasks),
+                availableRewardsCount = _statistic.countAvailableRewards(rewards),
+                redeemedRewardsCount = _statistic.countRedeemedRewards(rewards),
                 myToaster = MyToaster,
                 paginatedList = paginatedList,
                 PhotoPath = currentKid.PhotoPath

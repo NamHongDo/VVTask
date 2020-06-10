@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MimeKit;
-using NETCore.MailKit.Core;
 using VVTask.Models;
 using VVTask.ViewModels;
 
@@ -23,21 +22,18 @@ namespace VVTask.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
-        private readonly IEmailService _emailService;
         private readonly AppDbContext _appDbContext;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<AccountController> logger,
-            IEmailService emailService,
             AppDbContext appDbContext,
             IWebHostEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailService = emailService;
             _appDbContext = appDbContext;
         }
         [HttpGet]
