@@ -10,61 +10,66 @@
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <link href="~/css/styles.css" rel="stylesheet" />
 </head>
-<body>
-    <header>
-        <nav class="vNav navbar navbar-dark navbar-expand-lg navbar-toggleable-sm">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-                    <ul class="navbar-nav mr-auto">
+<body id="top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" asp-controller="Home" asp-action="Index">
+                <figure>
+                   <img src="~/images/nam_logo.png"/>
+                </figure>
+            </a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                    data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                    aria-label="Toggle Navigation"><i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="Kid" asp-action="List">VTask</a>
+                    </li>
+                    @if (_signInManager.IsSignedIn(User) && User.IsInRole("admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" area-expanded="false">
+                                Manage
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="nav-link " asp-controller="Admin" asp-action="ListUsers">Users</a>
+                                <a class="nav-link " asp-controller="Admin" asp-action="ListRoles">Roles</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    @if (_signInManager.IsSignedIn(User))
+                    {
                         <li class="nav-item">
-                            <a class="nav-link " asp-controller="Home" asp-action="Index">Home</a>
+                            <form method="post" asp-action="logout" asp-controller="account">
+                                <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link " asp-controller="Account" asp-action="Register">Register</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " asp-controller="Kid" asp-action="List">VTask</a>
+                            <a class="nav-link " asp-controller="Account" asp-action="Login">Login</a>
                         </li>
-                        @if (_signInManager.IsSignedIn(User) && User.IsInRole("admin"))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink"
-                                   data-toggle="dropdown" aria-haspopup="true" area-expanded="false">
-                                    Manage
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="nav-link " asp-controller="Admin" asp-action="ListUsers">Users</a>
-                                    <a class="nav-link " asp-controller="Admin" asp-action="ListRoles">Roles</a>
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
-                        @if (_signInManager.IsSignedIn(User))
-                        {
-                            <li class="nav-item">
-                                <form method="post" asp-action="logout" asp-controller="account">
-                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
-                                        Logout @User.Identity.Name
-                                    </button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link " asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
+                    }
+                </ul>
             </div>
-        </nav>
-    </header>
+
+        </div>
+    </nav>
+    <div class="heightAdded"></div>
     <div>
         <main role="main">
             @RenderBody()
@@ -75,6 +80,7 @@
         @RenderSection("Scripts", required: true)
     }
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/navbar-shrinker.js" asp-append-version="true"></script>
     <footer class="footer text-light text-center">
         <div id="footer-buffer"></div>
         <div class="container">
