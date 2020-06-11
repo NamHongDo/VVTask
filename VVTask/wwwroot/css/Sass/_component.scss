@@ -4,12 +4,6 @@
 .account-form {
     height: 30rem;
 }
-.landingDiv {
-    height: -webkit-calc(100% - 40px);
-    height: -moz-calc(100% - 40px);
-    height: calc(100% - 40px);
-    width: 100%;
-}
 #mytoastr{
     position:absolute;
     right: 0;
@@ -38,13 +32,17 @@ tbody {
 /*Nav bar*/
 #mainNav {
     border-bottom: solid 1px black;
-    background-color:$background-primary;
+    background-color: $background-primary;
+
     .nav-item {
         a {
-            font-size: 20px;
-            font-weight:500;
-            &:hover {
-                color: $theme-purple !important;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        &--active,&:hover {
+            a {
+                color: $theme-purple;
             }
         }
     }
