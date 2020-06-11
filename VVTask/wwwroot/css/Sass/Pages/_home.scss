@@ -1,6 +1,6 @@
 ﻿/*Mobile screen*/
 #landingDiv {
-    height: calc( 100vh - 3rem);
+    height: 100vh;
     display: flex;
     flex-direction: column;
 
@@ -41,6 +41,30 @@
         font-size: 40px;
         align-items: flex-end;
         padding-bottom: 10px;
+
+        i {
+            cursor:pointer;
+            transform: scale(1);
+            animation: pulse 2s infinite;
+            -webkit-box-shadow: 7px 6px 5px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 7px 6px 5px 0px rgba(0,0,0,0.75);
+            box-shadow: 7px 6px 5px 0px rgba(0,0,0,0.75);
+            border-radius:100px;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+            }
+
+            70% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(0.95);
+            }
+        }
     }
 }
 #bioDiv {

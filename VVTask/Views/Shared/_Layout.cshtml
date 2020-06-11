@@ -8,6 +8,7 @@
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
     <link href="~/css/styles.css" rel="stylesheet" />
 </head>
 <body id="top">
@@ -24,10 +25,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase mr-auto">
-                    <li class="nav-item">
+                    <li class= "@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "home" ? "nav-item nav-item--active" : "nav-item")">
                         <a class="nav-link " asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString().ToLower() == "kid" ? "nav-item nav-item--active" : "nav-item")">
                         <a class="nav-link " asp-controller="Kid" asp-action="List">VTask</a>
                     </li>
                     @if (_signInManager.IsSignedIn(User) && User.IsInRole("admin"))
@@ -69,7 +70,6 @@
 
         </div>
     </nav>
-    <div class="heightAdded"></div>
     <div>
         <main role="main">
             @RenderBody()

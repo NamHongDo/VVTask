@@ -16,7 +16,7 @@
         </h1>
     </div>
     <div id="intro-4">
-        <i class="fas fa-arrow-circle-down"></i>
+        <i class="fas fa-arrow-circle-down "></i>
     </div>
 </div>
 
@@ -240,11 +240,16 @@
                     scrollTop: $("#web-display").offset().top
                 }, 1000)
             }),
-                $('div.video-button').click(function () {
-                    $('html, body').animate({
-                        scrollTop: $("div.video-scroll-anchor").offset().top
-                    }, 1000)
-                })
+            $('div.video-button').click(function () {
+                $('html, body').animate({
+                    scrollTop: $("div.video-scroll-anchor").offset().top
+                }, 1000)
+            }),
+            $('div#intro-4').click(function () {
+                $('html, body').animate({
+                    scrollTop: $("#bioDiv").offset().top
+                }, 1000)
+            })
         });
     </script>
 }
